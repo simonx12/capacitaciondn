@@ -3,1152 +3,1105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guías de Capacitación</title>
+<title>Academy Now — DomoNow</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0ede8;color:#1a1a18;min-height:100vh;font-size:14px;line-height:1.5}
-a{color:inherit;text-decoration:none}
-input,textarea,select,button{font-family:inherit;font-size:14px}
-
-/* ---- TOKENS ---- */
 :root{
-  --bg:#fff;--bg2:#f7f5f1;--bg3:#f0ede8;
-  --text:#1a1a18;--text2:#6b6a66;--text3:#9b9a96;
-  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
-  --blue:#185FA5;--blue-bg:#E6F1FB;--blue-text:#0c447c;
-  --red:#A32D2D;--red-bg:#FCEBEB;--red-text:#791F1F;
-  --green:#3B6D11;--green-bg:#EAF3DE;--green-text:#27500A;
-  --amber:#854F0B;--amber-bg:#FAEEDA;--amber-text:#633806;
-  --gray-bg:#F1EFE8;--gray-text:#5F5E5A;
-  --radius:8px;--radius-lg:12px;
-  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.05);
+  --text-xs:clamp(10px,1.8vw,11px);--text-sm:clamp(12px,2vw,13px);--text-base:clamp(13px,2.2vw,15px);
+  --text-md:clamp(14px,2.4vw,16px);--text-lg:clamp(16px,3vw,20px);--text-xl:clamp(18px,3.5vw,24px);
+  --text-2xl:clamp(20px,4vw,28px);--text-3xl:clamp(24px,5vw,34px);--text-hero:clamp(28px,6vw,50px);
+  --purple:#7B2FBE;--purple-dark:#4A1A7A;--purple-deep:#2D0A50;--purple-mid:#9C27B0;
+  --purple-light:#B060D0;--purple-pale:#EDE0F8;--purple-bg:#F8F3FE;--purple-surface:#F0E6FA;
+  --amber:#F5A623;--amber-dark:#D4891A;--amber-light:#FAC75A;
+  --white:#FFFFFF;--ink:#1A0A2E;--ink2:#2D1A4A;
+  --text-p:#1A0A2E;--text-s:#5A4070;--text-m:#9B85B5;
+  --border:rgba(123,47,190,0.12);--border2:rgba(123,47,190,0.06);
+  --shadow-sm:0 1px 4px rgba(74,26,122,0.08),0 2px 8px rgba(74,26,122,0.04);
+  --shadow:0 4px 20px rgba(74,26,122,0.1);--shadow-lg:0 12px 40px rgba(74,26,122,0.15);
+  --grad:linear-gradient(135deg,#7B2FBE 0%,#9C27B0 60%,#B060D0 100%);
+  --grad-hero:linear-gradient(135deg,#2D0A50 0%,#7B2FBE 50%,#F5A623 100%);
+  --r:10px;--rl:16px;--rx:22px;--rf:999px;--nav-h:60px;
 }
-
-/* ---- LAYOUT ---- */
-.screen{display:none;min-height:100vh}
-.screen.active{display:flex;flex-direction:column}
-.center-screen{align-items:center;justify-content:center;padding:24px}
-
-/* ---- SETUP / AUTH CARDS ---- */
-.auth-card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:32px;width:100%;max-width:420px;box-shadow:var(--shadow)}
-.auth-logo{font-size:22px;font-weight:600;letter-spacing:-0.5px;margin-bottom:4px}
-.auth-sub{font-size:13px;color:var(--text2);margin-bottom:28px}
-.auth-tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--bg2);border-radius:var(--radius);padding:3px}
-.auth-tab{flex:1;padding:7px;text-align:center;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text2);border:none;background:transparent;transition:all .15s}
-.auth-tab.active{background:var(--bg);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
-.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);transition:border .15s}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue)}
-.field textarea{resize:vertical;min-height:80px;line-height:1.6}
-.btn{padding:9px 16px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
-.btn:hover{background:var(--bg2)}
-.btn:active{transform:scale(.98)}
-.btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
-.btn-primary:hover{background:#333;color:#fff}
-.btn-danger{color:var(--red);border-color:var(--red-bg)}
-.btn-danger:hover{background:var(--red-bg)}
+body{font-family:'Montserrat',sans-serif;background:var(--purple-bg);color:var(--text-p);min-height:100vh;font-size:var(--text-base);line-height:1.55;-webkit-font-smoothing:antialiased}
+input,textarea,select,button{font-family:'Montserrat',sans-serif;font-size:var(--text-sm)}
+.screen{display:none;min-height:100vh}.screen.active{display:flex;flex-direction:column}
+.center-screen{align-items:center;justify-content:center;padding:clamp(16px,4vw,32px);background:var(--purple-dark);position:relative;overflow:hidden}
+.center-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 15% 10%,rgba(245,166,35,0.22) 0%,transparent 55%),radial-gradient(ellipse 60% 70% at 85% 80%,rgba(176,96,208,0.28) 0%,transparent 55%)}
+/* LOGO */
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:clamp(28px,4.5vw,36px);height:clamp(28px,4.5vw,36px);flex-shrink:0}
+.logo-icon svg{width:100%;height:100%}
+.logo-text{font-size:clamp(15px,2.8vw,20px);font-weight:800;letter-spacing:-0.3px;color:#fff}
+.logo-text em{font-style:normal;font-weight:900}
+.logo-dark .logo-text{color:var(--ink)}.logo-dark .logo-text em{color:var(--purple)}
+/* AUTH */
+.auth-wrap{width:100%;max-width:420px;position:relative;z-index:1}
+.auth-card{background:rgba(255,255,255,0.07);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.12);border-radius:var(--rx);padding:clamp(22px,5vw,38px)}
+.auth-eyebrow{font-size:var(--text-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.auth-title{font-size:var(--text-2xl);font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:4px}
+.auth-sub{font-size:var(--text-sm);color:rgba(255,255,255,0.5);margin-bottom:24px}
+.auth-tabs{display:flex;gap:3px;margin-bottom:20px;background:rgba(0,0,0,0.2);border-radius:var(--r);padding:4px}
+.auth-tab{flex:1;padding:8px;text-align:center;border-radius:8px;cursor:pointer;font-size:var(--text-sm);font-weight:600;color:rgba(255,255,255,0.5);border:none;background:transparent;transition:all .2s}
+.auth-tab.active{background:var(--purple);color:#fff}
+/* FIELDS */
+.f{margin-bottom:14px}.f label{display:block;font-size:var(--text-xs);font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:5px;text-transform:uppercase;letter-spacing:.1em}
+.fl label{color:var(--text-m)}
+.f input,.f select,.f textarea{width:100%;padding:10px 13px;border:1px solid rgba(255,255,255,0.14);border-radius:var(--r);background:rgba(255,255,255,0.07);color:#fff;transition:all .15s;font-size:var(--text-sm)}
+.fl input,.fl select,.fl textarea{border-color:var(--border);background:var(--white);color:var(--text-p)}
+.f input::placeholder,.f textarea::placeholder{color:rgba(255,255,255,0.28)}
+.fl input::placeholder,.fl textarea::placeholder{color:var(--text-m)}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:rgba(245,166,35,.7);box-shadow:0 0 0 3px rgba(245,166,35,.15)}
+.fl input:focus,.fl select:focus,.fl textarea:focus{outline:none;border-color:rgba(123,47,190,.5);box-shadow:0 0 0 3px rgba(123,47,190,.1)}
+.f select option,.fl select option{background:#2D1A4A;color:#fff}
+.fl select option{background:#fff;color:var(--text-p)}
+.f textarea,.fl textarea{resize:vertical;min-height:80px;line-height:1.6}
+/* BUTTONS */
+.btn{padding:10px 18px;border-radius:var(--r);border:1px solid var(--border);background:var(--white);color:var(--text-p);cursor:pointer;font-size:var(--text-sm);font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{background:var(--purple-surface)}.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 2px 16px rgba(123,47,190,.35)}
+.btn-primary:hover{box-shadow:0 4px 24px rgba(123,47,190,.5);filter:brightness(1.08)}
+.btn-amber{background:var(--amber);border-color:var(--amber);color:var(--ink);box-shadow:0 2px 12px rgba(245,166,35,.3)}
+.btn-amber:hover{background:var(--amber-light)}
+.btn-pghost{background:transparent;border-color:var(--border);color:var(--purple)}
+.btn-pghost:hover{background:var(--purple-pale)}
+.btn-ghost{background:transparent;border-color:var(--border);color:var(--text-s)}
+.btn-ghost:hover{background:var(--purple-surface)}
+.btn-gw{background:transparent;border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.75)}
+.btn-gw:hover{background:rgba(255,255,255,.09)}
+.btn-danger{background:rgba(220,38,38,.07);border-color:rgba(220,38,38,.25);color:#dc2626}
+.btn-danger:hover{background:rgba(220,38,38,.13)}
 .btn-block{width:100%;justify-content:center}
-.btn-sm{padding:5px 10px;font-size:12px}
-.msg{padding:10px 12px;border-radius:var(--radius);font-size:13px;margin-bottom:16px;display:none}
-.msg.error{background:var(--red-bg);color:var(--red-text);display:block}
-.msg.success{background:var(--green-bg);color:var(--green-text);display:block}
-.msg.info{background:var(--blue-bg);color:var(--blue-text);display:block}
-
-/* ---- TOPNAV ---- */
-.topnav{background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.topnav-left{display:flex;align-items:center;gap:16px}
-.nav-logo{font-size:15px;font-weight:600;letter-spacing:-0.3px}
-.nav-links{display:flex;gap:2px}
-.nav-link{padding:6px 12px;border-radius:var(--radius);font-size:13px;color:var(--text2);cursor:pointer;border:none;background:transparent}
-.nav-link:hover{background:var(--bg2);color:var(--text)}
-.nav-link.active{background:var(--bg2);color:var(--text);font-weight:500}
-.topnav-right{display:flex;align-items:center;gap:10px}
-.user-pill{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:20px;background:var(--bg2);border:0.5px solid var(--border)}
-.user-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
-.role-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
-.role-admin{background:var(--amber-bg);color:var(--amber-text)}
-.role-editor{background:var(--blue-bg);color:var(--blue-text)}
-.role-viewer{background:var(--gray-bg);color:var(--gray-text)}
-
-/* ---- MAIN CONTENT ---- */
-.page-content{flex:1;padding:28px 24px;max-width:1100px;width:100%;margin:0 auto}
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
-.page-title{font-size:22px;font-weight:600;letter-spacing:-0.4px}
-.page-subtitle{font-size:13px;color:var(--text2);margin-top:2px}
-
-/* ---- GUIDE GRID ---- */
-.guides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.guide-card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:20px;cursor:pointer;transition:all .15s;position:relative}
-.guide-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
-.guide-card-title{font-size:15px;font-weight:500;margin-bottom:6px;line-height:1.3}
-.guide-card-meta{font-size:12px;color:var(--text3)}
-.guide-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--border)}
-.guide-card-actions{display:flex;gap:6px}
-.tag{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:500}
-.tag-sections{background:var(--blue-bg);color:var(--blue-text)}
-.tag-published{background:var(--green-bg);color:var(--green-text)}
-.tag-draft{background:var(--gray-bg);color:var(--gray-text)}
-
-/* ---- EDITOR ---- */
-.editor-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
-.editor-sidebar{width:260px;min-width:260px;background:var(--bg);border-right:0.5px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.sidebar-head{padding:14px 16px;border-bottom:0.5px solid var(--border)}
-.sidebar-guide-title{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sidebar-guide-sub{font-size:11px;color:var(--text3);margin-top:1px}
-.sections-list{flex:1;overflow-y:auto;padding:6px}
-.sec-item{padding:9px 11px;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:2px;border:0.5px solid transparent}
-.sec-item:hover{background:var(--bg2)}
-.sec-item.active{background:var(--bg2);border-color:var(--border)}
-.sec-num{font-size:11px;color:var(--text3);min-width:16px}
-.sec-label{font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sec-badges{display:flex;gap:3px}
-.sec-badge{font-size:10px;padding:1px 5px;border-radius:6px}
-.sec-badge-yt{background:var(--red-bg);color:var(--red-text)}
-.sec-badge-img{background:var(--green-bg);color:var(--green-text)}
-.sidebar-footer{padding:10px}
-.editor-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.editor-topbar{padding:10px 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
-.editor-tabs{display:flex;gap:3px}
-.editor-tab{padding:5px 13px;border-radius:var(--radius);font-size:13px;border:0.5px solid transparent;cursor:pointer;background:transparent;color:var(--text2)}
-.editor-tab:hover{background:var(--bg2);color:var(--text)}
-.editor-tab.active{background:var(--bg2);border-color:var(--border);color:var(--text);font-weight:500}
-.editor-body{flex:1;overflow-y:auto;padding:24px}
-.editor-actions{display:flex;gap:8px;align-items:center}
-
-/* ---- SECTION FORM ---- */
-.form-section{max-width:680px}
-.form-group{margin-bottom:18px}
-.form-label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em}
-.form-input{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);transition:border .15s}
-.form-input:focus{outline:none;border-color:var(--blue)}
-.form-textarea{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:110px;line-height:1.6;transition:border .15s}
-.form-textarea:focus{outline:none;border-color:var(--blue)}
-.form-row{display:flex;gap:10px;align-items:flex-end}
-.form-row .form-input{flex:1}
-.divider{border:none;border-top:0.5px solid var(--border);margin:24px 0}
-.media-preview-box{margin-top:10px;border-radius:var(--radius);overflow:hidden;border:0.5px solid var(--border)}
-.media-preview-box iframe{display:block;width:100%;height:210px;border:none}
-.media-preview-box img{display:block;width:100%;max-height:200px;object-fit:cover}
-.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
-.img-thumb{position:relative;border-radius:var(--radius);overflow:hidden;border:0.5px solid var(--border);aspect-ratio:16/9;background:var(--bg2)}
-.img-thumb img{width:100%;height:100%;object-fit:cover}
-.img-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-.hint{font-size:12px;color:var(--text3);margin-top:5px}
-.url-invalid{font-size:12px;color:var(--red-text);margin-top:5px}
-
-/* ---- PREVIEW ---- */
-.preview-wrap{max-width:720px;margin:0 auto}
-.preview-title{font-size:28px;font-weight:600;letter-spacing:-0.5px;margin-bottom:4px}
-.preview-count{font-size:13px;color:var(--text2);margin-bottom:36px}
-.preview-sec{margin-bottom:44px;padding-bottom:44px;border-bottom:0.5px solid var(--border)}
-.preview-sec:last-child{border-bottom:none}
-.preview-sec-num{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
-.preview-sec-title{font-size:20px;font-weight:500;margin-bottom:12px}
-.preview-sec-body{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:16px;white-space:pre-wrap}
-.preview-video{margin-bottom:16px;border-radius:var(--radius-lg);overflow:hidden;border:0.5px solid var(--border)}
-.preview-video iframe{display:block;width:100%;height:340px;border:none}
-
-/* ---- USERS TABLE ---- */
-.table-wrap{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden}
+.btn-lg{padding:clamp(10px,2vw,13px) clamp(18px,3vw,24px);font-size:var(--text-md)}
+.btn-sm{padding:6px 12px;font-size:var(--text-xs);border-radius:8px}
+.btn-xs{padding:4px 8px;font-size:10px;border-radius:6px}
+.msg{padding:11px 14px;border-radius:var(--r);font-size:var(--text-sm);font-weight:500;margin-bottom:14px;display:none}
+.msg.error{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);color:#dc2626;display:block}
+.msg.success{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#15803d;display:block}
+.msg.info{background:rgba(123,47,190,.1);border:1px solid rgba(123,47,190,.25);color:var(--purple);display:block}
+/* NAV */
+.topnav{height:var(--nav-h);background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 clamp(12px,3vw,28px);position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm);gap:8px}
+.nav-links{display:flex;gap:2px;margin-left:12px;flex-wrap:wrap}
+.nav-link{padding:clamp(5px,1vw,7px) clamp(8px,1.5vw,14px);border-radius:var(--r);font-size:var(--text-sm);font-weight:500;color:var(--text-s);cursor:pointer;border:none;background:transparent;transition:all .2s}
+.nav-link:hover{color:var(--text-p);background:var(--purple-surface)}
+.nav-link.active{color:var(--purple);background:var(--purple-pale);font-weight:700;border:1px solid rgba(123,47,190,.18)}
+.user-pill{display:flex;align-items:center;gap:8px;padding:5px clamp(8px,1.5vw,12px);border-radius:var(--rf);border:1px solid var(--border);background:var(--purple-bg);cursor:pointer}
+.user-av{width:clamp(24px,3.5vw,28px);height:clamp(24px,3.5vw,28px);border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:clamp(9px,1.5vw,11px);font-weight:800;color:#fff;flex-shrink:0}
+.user-name{font-size:var(--text-sm);font-weight:600;color:var(--text-p)}
+.role-badge{font-size:10px;padding:2px 8px;border-radius:var(--rf);font-weight:700}
+.role-admin{background:rgba(245,166,35,.15);color:#92400e;border:1px solid rgba(245,166,35,.3)}
+.role-editor{background:rgba(123,47,190,.12);color:var(--purple);border:1px solid rgba(123,47,190,.25)}
+.role-viewer{background:var(--purple-surface);color:var(--text-m);border:1px solid var(--border)}
+.ml-a{margin-left:auto}
+/* LAYOUT */
+.page{flex:1;padding:clamp(20px,4vw,40px) clamp(14px,3vw,32px);max-width:1200px;width:100%;margin:0 auto}
+.page-ey{font-size:var(--text-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.page-ti{font-size:var(--text-3xl);font-weight:800;letter-spacing:-0.6px;color:var(--text-p)}
+.page-su{font-size:var(--text-sm);color:var(--text-s);margin-top:4px}
+.page-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(20px,4vw,32px);gap:14px;flex-wrap:wrap}
+/* HERO */
+.hero{background:var(--ink);border-radius:32px;padding:clamp(26px,5vw,52px) clamp(22px,5vw,44px);margin-bottom:clamp(20px,4vw,36px);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 80% at 90% 50%,rgba(245,166,35,.22) 0%,transparent 55%),radial-gradient(ellipse 40% 60% at 8% 80%,rgba(123,47,190,.35) 0%,transparent 55%)}
+.hero-label{font-size:var(--text-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;position:relative;z-index:1}
+.hero-title{font-size:var(--text-hero);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.1;margin-bottom:12px;position:relative;z-index:1}
+.hero-sub{font-size:var(--text-md);color:rgba(255,255,255,.55);max-width:480px;line-height:1.7;position:relative;z-index:1}
+.hero-stats{display:flex;gap:clamp(14px,4vw,36px);margin-top:clamp(18px,4vw,32px);position:relative;z-index:1;flex-wrap:wrap}
+.hstat{display:flex;flex-direction:column}
+.hstat-n{font-size:var(--text-3xl);font-weight:900;color:#fff;letter-spacing:-0.8px}
+.hstat-l{font-size:var(--text-xs);color:rgba(255,255,255,.45);margin-top:2px}
+/* CATS */
+.cats-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cat-chip{padding:clamp(5px,1vw,8px) clamp(12px,2vw,18px);border-radius:var(--rf);font-size:var(--text-sm);font-weight:500;border:1px solid var(--border);background:var(--white);color:var(--text-s);cursor:pointer;transition:all .2s;white-space:nowrap}
+.cat-chip:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-pale)}
+.cat-chip.active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(123,47,190,.3)}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:clamp(14px,2.5vw,20px)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all .25s;display:flex;flex-direction:column}
+.card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:rgba(123,47,190,.25)}
+.card-ban{height:clamp(130px,20vw,165px);background:var(--purple-surface);position:relative;overflow:hidden;flex-shrink:0}
+.card-ban img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-ban img{transform:scale(1.05)}
+.card-ban-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:clamp(28px,5vw,44px);background:linear-gradient(135deg,var(--purple-pale) 0%,var(--purple-surface) 100%)}
+.card-body{padding:clamp(14px,2.5vw,18px);flex:1;display:flex;flex-direction:column}
+.card-cat{font-size:var(--text-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);margin-bottom:6px}
+.card-title{font-size:var(--text-md);font-weight:700;color:var(--text-p);line-height:1.4;margin-bottom:6px;flex:1}
+.card-desc{font-size:var(--text-sm);color:var(--text-s);line-height:1.6;margin-bottom:12px}
+.card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:11px;border-top:1px solid var(--border2)}
+.card-views{font-size:var(--text-xs);color:var(--text-m)}
+.trend-badge{position:absolute;top:10px;right:10px;background:var(--amber);color:var(--ink);font-size:10px;font-weight:800;padding:3px 8px;border-radius:var(--rf);box-shadow:0 2px 8px rgba(245,166,35,.4)}
+/* SEARCH */
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:var(--rf);padding:clamp(6px,1.2vw,9px) clamp(12px,2vw,18px);width:100%;max-width:330px}
+.search-bar input{border:none;background:transparent;outline:none;flex:1;font-size:var(--text-sm);color:var(--text-p)}
+.search-bar input::placeholder{color:var(--text-m)}
+/* EDITOR */
+.ed-layout{display:flex;height:calc(100vh - var(--nav-h));overflow:hidden}
+.ed-side{width:clamp(200px,25vw,280px);min-width:190px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.ed-side-head{padding:clamp(12px,2vw,18px);border-bottom:1px solid var(--border)}
+.ed-side-label{font-size:var(--text-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.ed-side-title{font-size:var(--text-sm);font-weight:700;color:var(--text-p);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.ed-side-sub{font-size:var(--text-xs);color:var(--text-m);margin-top:3px}
+.sec-list{flex:1;overflow-y:auto;padding:8px}
+.sec-list::-webkit-scrollbar{width:3px}
+.sec-list::-webkit-scrollbar-thumb{background:var(--purple-surface)}
+.sec-item{padding:clamp(8px,1.5vw,11px) 12px;border-radius:var(--r);cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:3px;border:1px solid transparent;transition:all .15s}
+.sec-item:hover{background:var(--purple-bg);border-color:var(--border)}
+.sec-item.active{background:var(--purple-pale);border-color:rgba(123,47,190,.3)}
+.sec-num{font-size:var(--text-xs);font-weight:700;color:var(--text-m);min-width:20px;background:var(--purple-surface);border-radius:5px;padding:2px 5px;text-align:center;flex-shrink:0}
+.sec-item.active .sec-num{background:var(--purple);color:#fff}
+.sec-lbl{font-size:var(--text-sm);font-weight:500;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-p)}
+.sec-bdg{font-size:9px;padding:2px 5px;border-radius:4px;font-weight:700}
+.sec-yt{background:rgba(220,38,38,.1);color:#dc2626}
+.sec-vid{background:rgba(123,47,190,.12);color:var(--purple)}
+.sec-img{background:rgba(34,197,94,.1);color:#15803d}
+.ed-side-foot{padding:10px;border-top:1px solid var(--border)}
+.ed-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--purple-bg)}
+.ed-top{padding:clamp(8px,1.5vw,12px) clamp(14px,3vw,24px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--white)}
+.ed-tabs{display:flex;gap:2px;background:var(--purple-bg);border-radius:var(--r);padding:3px}
+.ed-tab{padding:clamp(5px,1vw,7px) clamp(12px,2vw,18px);border-radius:8px;font-size:var(--text-sm);font-weight:500;border:none;cursor:pointer;background:transparent;color:var(--text-s);transition:all .15s}
+.ed-tab.active{background:var(--white);color:var(--purple);font-weight:700;box-shadow:var(--shadow-sm)}
+.ed-body{flex:1;overflow-y:auto;padding:clamp(16px,3vw,30px)}
+.ed-body::-webkit-scrollbar{width:4px}
+.ed-body::-webkit-scrollbar-thumb{background:var(--purple-surface)}
+/* FORM */
+.fsec{max-width:720px}
+.fg{margin-bottom:22px}
+.flbl{display:block;font-size:var(--text-xs);font-weight:700;color:var(--text-m);margin-bottom:7px;text-transform:uppercase;letter-spacing:.1em}
+.finp{width:100%;padding:clamp(9px,1.5vw,12px) 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--white);color:var(--text-p);transition:all .15s;font-size:var(--text-sm)}
+.finp::placeholder{color:var(--text-m)}
+.finp:focus{outline:none;border-color:rgba(123,47,190,.5);box-shadow:0 0 0 3px rgba(123,47,190,.1)}
+.fta{width:100%;padding:clamp(9px,1.5vw,12px) 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--white);color:var(--text-p);resize:vertical;min-height:120px;line-height:1.7;transition:all .15s;font-size:var(--text-sm)}
+.fta::placeholder{color:var(--text-m)}
+.fta:focus{outline:none;border-color:rgba(123,47,190,.5);box-shadow:0 0 0 3px rgba(123,47,190,.1)}
+.frow{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.frow .finp{flex:1;min-width:160px}
+.fdiv{border:none;border-top:1px solid var(--border);margin:clamp(18px,3vw,28px) 0}
+.fhint{font-size:var(--text-xs);color:var(--text-m);margin-top:6px}
+.finval{font-size:var(--text-xs);color:#dc2626;margin-top:5px}
+/* BANNER */
+.ban-up{border:2px dashed rgba(123,47,190,.3);border-radius:var(--rl);overflow:hidden;position:relative;background:var(--purple-pale);min-height:clamp(130px,20vw,185px);cursor:pointer;transition:all .2s}
+.ban-up:hover{border-color:var(--purple);background:var(--purple-surface)}
+.ban-up img{width:100%;height:clamp(130px,20vw,185px);object-fit:cover;display:block}
+.ban-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.ban-ov-btn{position:absolute;bottom:10px;right:10px;background:rgba(26,10,46,.75);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:var(--text-xs);font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
+/* DROP */
+.drop{border:2px dashed rgba(123,47,190,.3);border-radius:var(--rl);padding:clamp(20px,4vw,34px) 24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--purple-pale)}
+.drop:hover,.drop.dragover{border-color:var(--purple);background:var(--purple-surface)}
+.drop-ico{font-size:clamp(22px,4vw,32px);margin-bottom:10px;opacity:.7}
+.drop-txt{font-size:var(--text-base);font-weight:600;color:var(--text-p)}
+.drop-sub{font-size:var(--text-xs);color:var(--text-s);margin-top:4px}
+.uprog{margin-top:12px;display:none;background:var(--purple-surface);border-radius:var(--r);padding:14px}
+.uprog.on{display:block}
+.uprog-info{display:flex;justify-content:space-between;font-size:var(--text-xs);font-weight:600;margin-bottom:8px;color:var(--text-s)}
+.uprog-info span:last-child{color:var(--purple)}
+.pbar-wrap{background:var(--purple-pale);border-radius:10px;height:5px;overflow:hidden}
+.pbar{height:100%;background:var(--grad);border-radius:10px;transition:width .3s;width:0%}
+.cur-med{background:var(--purple-bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;display:flex;align-items:center;gap:10px;margin-top:10px}
+.cur-med-ico{font-size:22px;flex-shrink:0}
+.cur-med-info{flex:1;overflow:hidden}
+.cur-med-name{font-size:var(--text-sm);font-weight:600;color:var(--text-p)}
+.cur-med-sub{font-size:var(--text-xs);color:var(--text-m);margin-top:2px}
+.cur-med-del{background:none;border:none;cursor:pointer;color:var(--text-m);font-size:20px;line-height:1;padding:2px 6px;border-radius:4px}
+.cur-med-del:hover{color:#dc2626;background:rgba(220,38,38,.08)}
+.med-prev{margin-top:12px;border-radius:var(--rl);overflow:hidden;border:1px solid var(--border)}
+.med-prev iframe,.med-prev video{display:block;width:100%;border:none}
+.med-prev iframe{height:clamp(170px,28vw,230px)}
+.med-prev video{max-height:clamp(170px,28vw,250px);background:#000}
+.mtabs{display:flex;gap:2px;margin-bottom:14px;background:var(--purple-surface);border-radius:var(--r);padding:3px;width:fit-content}
+.mtab{padding:clamp(5px,1vw,7px) clamp(10px,2vw,16px);border-radius:8px;cursor:pointer;font-size:var(--text-xs);font-weight:600;color:var(--text-s);border:none;background:transparent;transition:all .15s}
+.mtab.active{background:var(--white);color:var(--purple);font-weight:700;box-shadow:var(--shadow-sm)}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(90px,14vw,130px),1fr));gap:8px;margin-top:14px}
+.img-th{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9;background:var(--purple-surface)}
+.img-th img{width:100%;height:100%;object-fit:cover}
+.img-del{position:absolute;top:5px;right:5px;background:rgba(26,10,46,.7);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.img-del:hover{background:rgba(220,38,38,.85)}
+/* PREVIEW */
+.prev-wrap{max-width:760px;margin:0 auto}
+.prev-ban{height:clamp(150px,26vw,240px);border-radius:var(--rx);overflow:hidden;background:var(--purple-surface);margin-bottom:24px;position:relative}
+.prev-ban img{width:100%;height:100%;object-fit:cover}
+.prev-ban-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:50px;background:var(--grad)}
+.prev-ban-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,46,.85) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(14px,3vw,26px)}
+.prev-title{font-size:var(--text-2xl);font-weight:800;color:#fff;letter-spacing:-0.5px}
+.prev-sec{margin-bottom:clamp(24px,4vw,44px);padding-bottom:clamp(24px,4vw,44px);border-bottom:1px solid var(--border)}
+.prev-sec:last-child{border-bottom:none}
+.prev-sec-n{font-size:var(--text-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.prev-sec-t{font-size:var(--text-xl);font-weight:700;margin-bottom:14px;letter-spacing:-0.3px;color:var(--text-p)}
+.prev-sec-b{font-size:var(--text-base);color:var(--text-s);line-height:1.85;margin-bottom:18px;white-space:pre-wrap}
+.prev-vid{margin-bottom:18px;border-radius:var(--rl);overflow:hidden;border:1px solid var(--border)}
+.prev-vid iframe{display:block;width:100%;height:clamp(180px,35vw,360px);border:none}
+.prev-vid video{display:block;width:100%;max-height:380px;background:#000}
+/* VIEWER */
+.view-layout{max-width:860px;margin:0 auto;padding:clamp(18px,3.5vw,40px) clamp(14px,3vw,28px)}
+.view-ban{height:clamp(180px,32vw,300px);border-radius:var(--rx);overflow:hidden;margin-bottom:28px;position:relative;background:var(--purple-surface)}
+.view-ban img{width:100%;height:100%;object-fit:cover}
+.view-ban-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:60px;background:var(--grad)}
+.view-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,46,.8) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(16px,3vw,30px)}
+.view-cat{font-size:var(--text-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber-light,#FAC75A);margin-bottom:8px}
+.view-title{font-size:var(--text-2xl);font-weight:900;color:#fff;letter-spacing:-0.6px;line-height:1.2}
+.view-meta{display:flex;align-items:center;gap:clamp(8px,2vw,16px);margin-bottom:28px;flex-wrap:wrap}
+.view-meta span{font-size:var(--text-xs);color:var(--text-m)}
+.view-sec{margin-bottom:clamp(28px,5vw,48px)}
+.view-sec-n{font-size:var(--text-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.view-sec-t{font-size:var(--text-xl);font-weight:700;color:var(--text-p);letter-spacing:-0.3px;margin-bottom:14px}
+.view-sec-b{font-size:var(--text-md);color:var(--text-s);line-height:1.9;white-space:pre-wrap;margin-bottom:20px}
+.view-vid{border-radius:var(--rl);overflow:hidden;border:1px solid var(--border);margin-bottom:20px}
+.view-vid iframe{display:block;width:100%;height:clamp(180px,40vw,380px);border:none}
+.view-vid video{display:block;width:100%;max-height:400px;background:#000}
+.view-imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(120px,20vw,170px),1fr));gap:10px;margin-bottom:20px}
+.view-img{border-radius:var(--r);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9}
+.view-img img{width:100%;height:100%;object-fit:cover}
+/* TABLES */
+.tbl-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;padding:11px 16px;text-align:left;background:var(--bg2);border-bottom:0.5px solid var(--border)}
-td{padding:12px 16px;font-size:13px;border-bottom:0.5px solid var(--border)}
+th{font-size:var(--text-xs);font-weight:700;color:var(--text-m);text-transform:uppercase;letter-spacing:.1em;padding:clamp(10px,2vw,13px) clamp(12px,2.5vw,18px);text-align:left;background:var(--purple-bg);border-bottom:1px solid var(--border)}
+td{padding:clamp(10px,2vw,13px) clamp(12px,2.5vw,18px);font-size:var(--text-sm);border-bottom:1px solid var(--border2);color:var(--text-p)}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--bg2)}
-
-/* ---- EMPTY & LOADING ---- */
-.empty{text-align:center;padding:60px 20px;color:var(--text2)}
-.empty-icon{font-size:36px;margin-bottom:12px;opacity:.35}
-.loading{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px}
-.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+tr:hover td{background:var(--purple-bg)}
+/* ANALYTICS */
+.an-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(150px,22vw,210px),1fr));gap:clamp(12px,2vw,18px);margin-bottom:clamp(20px,4vw,30px)}
+.stat-c{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:clamp(14px,3vw,22px)}
+.stat-lbl{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-m);margin-bottom:8px}
+.stat-val{font-size:var(--text-3xl);font-weight:900;color:var(--text-p);letter-spacing:-0.8px}
+.stat-sub{font-size:var(--text-xs);color:var(--text-m);margin-top:4px}
+.trend-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(clamp(250px,40%,450px),1fr));gap:clamp(14px,2.5vw,22px)}
+.trend-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:clamp(14px,3vw,22px)}
+.trend-card-title{font-size:var(--text-base);font-weight:700;color:var(--text-p);margin-bottom:16px}
+.trow{display:flex;align-items:center;gap:10px;padding:clamp(7px,1.5vw,10px) 0;border-bottom:1px solid var(--border2)}
+.trow:last-child{border-bottom:none}
+.t-rank{font-size:var(--text-xs);font-weight:700;color:var(--text-m);min-width:18px}
+.t-title{font-size:var(--text-sm);font-weight:500;color:var(--text-p);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-track{flex:1;max-width:120px;height:5px;background:var(--purple-pale);border-radius:10px;overflow:hidden;flex-shrink:0}
+.t-fill{height:100%;background:var(--grad);border-radius:10px;transition:width .6s}
+.t-fill.am{background:linear-gradient(135deg,var(--amber) 0%,var(--amber-light) 100%)}
+.t-count{font-size:var(--text-xs);font-weight:700;color:var(--text-s);min-width:28px;text-align:right}
+/* SUGGESTIONS */
+.sug-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:clamp(12px,2vw,18px);margin-top:20px}
+.sug-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:clamp(14px,2.5vw,20px)}
+.sug-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sug-av{width:30px;height:30px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.sug-author{font-size:var(--text-sm);font-weight:600;color:var(--text-p)}
+.sug-date{font-size:var(--text-xs);color:var(--text-m);margin-left:auto}
+.sug-text{font-size:var(--text-sm);color:var(--text-s);line-height:1.7}
+.sug-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--rf);margin-top:10px}
+.s-pend{background:rgba(245,166,35,.12);color:#92400e;border:1px solid rgba(245,166,35,.25)}
+.s-done{background:rgba(34,197,94,.1);color:#15803d;border:1px solid rgba(34,197,94,.2)}
+.s-rev{background:rgba(123,47,190,.1);color:var(--purple);border:1px solid rgba(123,47,190,.2)}
+.sug-form{background:var(--white);border:1px solid var(--border);border-radius:var(--rl);padding:clamp(16px,3vw,24px);margin-bottom:24px}
+.sug-form-t{font-size:var(--text-lg);font-weight:700;color:var(--text-p);margin-bottom:14px}
+/* CATS ADMIN */
+.cats-list{display:flex;flex-direction:column;gap:8px}
+.cat-row{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:clamp(10px,2vw,14px) clamp(14px,2.5vw,18px);display:flex;align-items:center;gap:12px;transition:all .15s}
+.cat-row:hover{box-shadow:var(--shadow-sm)}
+.cat-row-n{font-size:var(--text-base);font-weight:600;color:var(--text-p);flex:1}
+.cat-row-c{font-size:var(--text-sm);color:var(--text-m)}
+/* MISC */
+.empty{text-align:center;padding:clamp(40px,8vw,70px) 20px;color:var(--text-s)}
+.empty-ico{font-size:clamp(30px,5vw,44px);margin-bottom:14px;opacity:.45}
+.empty-t{font-size:var(--text-lg);font-weight:700;margin-bottom:6px;color:var(--text-p)}
+.loading{text-align:center;padding:clamp(40px,8vw,70px) 20px;color:var(--text-m);font-size:var(--text-sm)}
+.spinner{width:22px;height:22px;border:2px solid var(--purple-pale);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ---- MODAL ---- */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
-.modal{background:var(--bg);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:460px;border:0.5px solid var(--border2)}
-.modal-title{font-size:16px;font-weight:500;margin-bottom:20px}
-
-/* ---- SETUP STEPS ---- */
-.step-header{margin-bottom:24px}
-.step-badge{display:inline-block;font-size:11px;background:var(--blue-bg);color:var(--blue-text);padding:3px 9px;border-radius:10px;margin-bottom:10px;font-weight:500}
-.setup-code{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px;font-family:monospace;font-size:12px;color:var(--text2);overflow-x:auto;white-space:pre;margin:10px 0;line-height:1.6}
-.setup-link{color:var(--blue);text-decoration:underline;cursor:pointer}
+.modal-bg{position:fixed;inset:0;background:rgba(26,10,46,.55);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(8px)}
+.modal{background:var(--white);border-radius:var(--rx);padding:clamp(20px,4vw,30px);width:100%;max-width:480px;border:1px solid var(--border);box-shadow:var(--shadow-lg)}
+.modal-t{font-size:var(--text-xl);font-weight:800;margin-bottom:20px;letter-spacing:-0.3px;color:var(--text-p)}
+.setup-code{background:var(--ink);border-radius:var(--r);padding:14px;font-family:monospace;font-size:var(--text-xs);color:rgba(255,255,255,.7);overflow-x:auto;white-space:pre;margin:10px 0;line-height:1.6;max-height:200px;overflow-y:auto}
+.sec-ord{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+@media(max-width:768px){
+  :root{--nav-h:54px}
+  .nav-link{padding:5px 8px;font-size:12px}
+  .user-name{display:none}
+  .trend-charts{grid-template-columns:1fr}
+  .an-grid{grid-template-columns:repeat(2,1fr)}
+  .ed-side{width:190px;min-width:170px}
+}
+@media(max-width:520px){
+  .an-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-stats{gap:12px}
+  .auth-card{padding:18px}
+  .ed-side{width:170px}
+}
+@media(max-width:420px){
+  .user-pill .role-badge{display:none}
+  .nav-link{padding:5px 7px;font-size:11px}
+}
 </style>
 </head>
 <body>
 
-<!-- ==================== SETUP SCREEN ==================== -->
+<!-- SETUP -->
 <div id="screen-setup" class="screen center-screen active">
-  <div class="auth-card">
-    <div class="auth-logo">Guías de Capacitación</div>
-    <div class="auth-sub">Conecta tu proyecto de Supabase para comenzar</div>
-    <div class="step-header">
-      <span class="step-badge">Configuración inicial</span>
+  <div class="auth-wrap">
+    <div style="text-align:center;margin-bottom:26px">
+      <div class="logo" style="justify-content:center;margin-bottom:8px">
+        <div class="logo-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M24 6L6 19V42H18V30H30V42H42V19L24 6Z" fill="white"/><circle cx="24" cy="22" r="3.5" fill="#F5A623"/></svg></div>
+        <div class="logo-text">Academy<em>Now</em></div>
+      </div>
+      <div style="font-size:var(--text-xs);color:rgba(255,255,255,.35);letter-spacing:.06em">by DomoNow · Capacitación</div>
     </div>
-    <div id="setup-msg" class="msg"></div>
-    <div class="field">
-      <label>URL del proyecto Supabase</label>
-      <input type="url" id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co">
-    </div>
-    <div class="field">
-      <label>Anon Key (clave pública)</label>
-      <input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-    </div>
-    <div class="hint" style="margin-bottom:16px">Encuéntralas en <strong>Supabase → Settings → API</strong></div>
-    <button class="btn btn-primary btn-block" onclick="saveConfig()">Conectar</button>
-    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid var(--border)">
-      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Primera vez? Ejecuta este SQL en Supabase → SQL Editor:</div>
-      <button class="btn btn-sm" onclick="toggleSchema()" style="margin-bottom:8px">Ver schema SQL</button>
-      <div id="schema-box" style="display:none">
-        <div class="setup-code" id="schema-code"></div>
-        <button class="btn btn-sm" onclick="copySchema()">Copiar SQL</button>
+    <div class="auth-card">
+      <div class="auth-eyebrow">Configuración inicial</div>
+      <div class="auth-title">Conecta Supabase</div>
+      <div class="auth-sub">Ingresa las credenciales de tu proyecto</div>
+      <div id="setup-msg" class="msg"></div>
+      <div class="f"><label>URL del proyecto</label><input type="url" id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co"></div>
+      <div class="f"><label>Anon Key</label><input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."></div>
+      <div class="fhint" style="margin-bottom:16px;color:rgba(255,255,255,.4)">Ir a <strong style="color:var(--amber)">Supabase → Settings → API</strong></div>
+      <button class="btn btn-amber btn-block btn-lg" onclick="saveConfig()">Conectar proyecto</button>
+      <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)">
+        <button class="btn btn-gw btn-sm" onclick="toggleSchema()">Ver schema SQL</button>
+        <div id="schema-box" style="display:none;margin-top:10px">
+          <div class="setup-code" id="schema-code"></div>
+          <button class="btn btn-gw btn-sm" style="margin-top:8px" onclick="copySchema()">Copiar SQL</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== AUTH SCREEN ==================== -->
+<!-- AUTH -->
 <div id="screen-auth" class="screen center-screen">
-  <div class="auth-card">
-    <div class="auth-logo">Guías de Capacitación</div>
-    <div class="auth-sub" id="auth-subtitle">Inicia sesión para continuar</div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login" onclick="showAuthTab('login')">Iniciar sesión</button>
-      <button class="auth-tab" id="tab-register" onclick="showAuthTab('register')">Registrarse</button>
-    </div>
-    <div id="auth-msg" class="msg"></div>
-    <div id="auth-register-fields" style="display:none">
-      <div class="field">
-        <label>Nombre completo</label>
-        <input type="text" id="reg-name" placeholder="Tu nombre">
+  <div class="auth-wrap">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="logo" style="justify-content:center;margin-bottom:6px">
+        <div class="logo-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M24 6L6 19V42H18V30H30V42H42V19L24 6Z" fill="white"/><circle cx="24" cy="22" r="3.5" fill="#F5A623"/></svg></div>
+        <div class="logo-text">Academy<em>Now</em></div>
       </div>
+      <div style="font-size:var(--text-xs);color:rgba(255,255,255,.35)">by DomoNow</div>
     </div>
-    <div class="field">
-      <label>Correo electrónico</label>
-      <input type="email" id="auth-email" placeholder="correo@empresa.com">
-    </div>
-    <div class="field">
-      <label>Contraseña</label>
-      <input type="password" id="auth-password" placeholder="Mínimo 6 caracteres">
-    </div>
-    <button class="btn btn-primary btn-block" id="auth-submit" onclick="submitAuth()">Ingresar</button>
-    <div style="margin-top:14px;text-align:center">
-      <button class="btn btn-sm" onclick="clearConfig()" style="color:var(--text3)">Cambiar configuración</button>
+    <div class="auth-card">
+      <div class="auth-eyebrow">Guías de Capacitación</div>
+      <div class="auth-title" id="auth-title-txt">Bienvenido de vuelta</div>
+      <div class="auth-sub" id="auth-sub-txt">Inicia sesión para continuar</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="showAuthTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" id="tab-register" onclick="showAuthTab('register')">Registrarme</button>
+      </div>
+      <div id="auth-msg" class="msg"></div>
+      <div id="auth-reg-fields" style="display:none">
+        <div class="f"><label>Nombre completo</label><input type="text" id="reg-name" placeholder="Tu nombre"></div>
+      </div>
+      <div class="f"><label>Correo electrónico</label><input type="email" id="auth-email" placeholder="correo@empresa.com"></div>
+      <div class="f"><label>Contraseña</label><input type="password" id="auth-pass" placeholder="Mínimo 6 caracteres"></div>
+      <button class="btn btn-primary btn-block btn-lg" id="auth-submit" onclick="submitAuth()">Ingresar</button>
+      <div style="margin-top:12px;text-align:center">
+        <button class="btn btn-gw btn-sm" onclick="clearConfig()">Cambiar configuración</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== MAIN APP ==================== -->
+<!-- APP -->
 <div id="screen-app" class="screen" style="flex-direction:column">
-
-  <!-- Topnav -->
   <nav class="topnav">
-    <div class="topnav-left">
-      <div class="nav-logo">Guías</div>
-      <div class="nav-links">
-        <button class="nav-link active" id="nav-guides" onclick="navTo('guides')">Guías</button>
-        <button class="nav-link" id="nav-users" onclick="navTo('users')" style="display:none">Usuarios</button>
-      </div>
+    <div class="logo logo-dark" style="flex-shrink:0">
+      <div class="logo-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M24 6L6 19V42H18V30H30V42H42V19L24 6Z" fill="#7B2FBE"/><circle cx="24" cy="22" r="3.5" fill="#F5A623"/></svg></div>
+      <div class="logo-text" style="color:var(--ink);font-size:clamp(14px,2.5vw,18px)">Academy<em style="color:var(--purple)">Now</em></div>
     </div>
-    <div class="topnav-right">
+    <div class="nav-links">
+      <button class="nav-link active" id="nav-home"        onclick="navTo('home')">Inicio</button>
+      <button class="nav-link"        id="nav-suggestions" onclick="navTo('suggestions')">Sugerencias</button>
+      <button class="nav-link"        id="nav-analytics"   onclick="navTo('analytics')"   style="display:none">Analytics</button>
+      <button class="nav-link"        id="nav-users"       onclick="navTo('users')"        style="display:none">Usuarios</button>
+      <button class="nav-link"        id="nav-cats"        onclick="navTo('cats')"         style="display:none">Categorías</button>
+    </div>
+    <div class="ml-a" style="display:flex;align-items:center;gap:8px;flex-shrink:0">
       <div class="user-pill">
-        <div class="user-avatar" id="user-avatar" style="background:var(--blue-bg);color:var(--blue-text)">U</div>
-        <span style="font-size:13px" id="user-name">Usuario</span>
-        <span class="role-badge" id="user-role-badge">viewer</span>
+        <div class="user-av" id="user-av">U</div>
+        <span class="user-name" id="user-name">Usuario</span>
+        <span class="role-badge" id="user-role">viewer</span>
       </div>
-      <button class="btn btn-sm" onclick="signOut()">Salir</button>
+      <button class="btn btn-ghost btn-sm" onclick="signOut()">Salir</button>
     </div>
   </nav>
 
-  <!-- Pages -->
-  <div id="page-guides" class="page-content" style="display:block">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Guías de capacitación</div>
-        <div class="page-subtitle" id="guides-subtitle"></div>
+  <!-- HOME -->
+  <div id="page-home" class="page" style="display:block">
+    <div class="hero">
+      <div class="hero-label">● Academy Now · DomoNow</div>
+      <div class="hero-title">Aprende, crece<br>y comparte</div>
+      <div class="hero-sub">Guías, tutoriales y recursos creados por tu equipo.</div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-n" id="stat-g">0</span><span class="hstat-l">Guías publicadas</span></div>
+        <div class="hstat"><span class="hstat-n" id="stat-v">0</span><span class="hstat-l">Lecturas totales</span></div>
+        <div class="hstat"><span class="hstat-n" id="stat-c">0</span><span class="hstat-l">Categorías</span></div>
       </div>
-      <button class="btn btn-primary" id="btn-new-guide" onclick="openNewGuideModal()" style="display:none">+ Nueva guía</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap">
+      <div class="cats-bar" id="cats-filter"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="search-bar"><span style="color:var(--text-m)">🔍</span><input type="text" placeholder="Buscar guías..." id="search-inp" oninput="filterGuides()"></div>
+        <button class="btn btn-amber btn-sm" id="btn-new" onclick="openNewModal()" style="display:none">+ Nueva guía</button>
+      </div>
     </div>
     <div id="guides-list"></div>
   </div>
 
-  <div id="page-users" class="page-content" style="display:none">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Gestión de usuarios</div>
-        <div class="page-subtitle">Administra roles y accesos</div>
-      </div>
+  <!-- SUGGESTIONS -->
+  <div id="page-suggestions" class="page" style="display:none">
+    <div class="page-hd"><div><div class="page-ey">Comunidad</div><div class="page-ti">Sugerencias</div><div class="page-su">Comparte ideas para mejorar la plataforma</div></div></div>
+    <div class="sug-form">
+      <div class="sug-form-t">💡 Enviar una sugerencia</div>
+      <div class="f fl"><label>Tu idea o mejora</label><textarea id="sug-text" class="fta" style="min-height:80px" placeholder="Describe tu sugerencia..."></textarea></div>
+      <div id="sug-msg" class="msg"></div>
+      <button class="btn btn-primary btn-sm" onclick="submitSuggestion()">Enviar sugerencia</button>
     </div>
+    <div id="sug-list"></div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div id="page-analytics" class="page" style="display:none">
+    <div class="page-hd"><div><div class="page-ey">Administración</div><div class="page-ti">Analytics</div><div class="page-su">Tendencias y métricas de uso</div></div></div>
+    <div class="an-grid" id="an-kpis"></div>
+    <div class="trend-charts">
+      <div class="trend-card"><div class="trend-card-title">🔥 Más leídos</div><div id="trend-list"></div></div>
+      <div class="trend-card"><div class="trend-card-title">📂 Por categoría</div><div id="cat-trend"></div></div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div id="page-users" class="page" style="display:none">
+    <div class="page-hd"><div><div class="page-ey">Administración</div><div class="page-ti">Usuarios</div><div class="page-su">Gestiona roles y permisos</div></div></div>
     <div id="users-list"></div>
   </div>
 
-  <!-- Editor (fullscreen) -->
+  <!-- CATS -->
+  <div id="page-cats" class="page" style="display:none">
+    <div class="page-hd">
+      <div><div class="page-ey">Administración</div><div class="page-ti">Categorías</div><div class="page-su">Organiza el contenido por temas</div></div>
+      <button class="btn btn-primary" onclick="openNewCatModal()">+ Nueva categoría</button>
+    </div>
+    <div id="cats-admin-list"></div>
+  </div>
+
+  <!-- EDITOR -->
   <div id="page-editor" style="display:none;flex:1;flex-direction:column">
-    <div class="editor-layout">
-      <div class="editor-sidebar">
-        <div class="sidebar-head">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-            <button class="btn btn-sm" onclick="navTo('guides')">← Volver</button>
-            <button class="btn btn-sm btn-primary" id="btn-publish" onclick="togglePublish()"></button>
+    <div class="ed-layout">
+      <div class="ed-side">
+        <div class="ed-side-head">
+          <div style="display:flex;gap:6px;margin-bottom:12px">
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="navTo('home')">← Volver</button>
+            <button class="btn btn-sm btn-amber" id="btn-pub" onclick="togglePublish()">Publicar</button>
           </div>
-          <div class="sidebar-guide-title" id="sidebar-title">Guía</div>
-          <div class="sidebar-guide-sub" id="sidebar-sub"></div>
+          <div class="ed-side-label">Artículo</div>
+          <div class="ed-side-title" id="side-title"></div>
+          <div class="ed-side-sub" id="side-sub"></div>
         </div>
-        <div class="sections-list" id="sections-list"></div>
-        <div class="sidebar-footer">
-          <button class="btn btn-sm btn-block" id="btn-add-sec" onclick="addSection()" style="border-style:dashed">+ Agregar sección</button>
+        <div class="sec-list" id="sec-list"></div>
+        <div class="ed-side-foot">
+          <button class="btn btn-ghost btn-sm btn-block" id="btn-add-sec" onclick="addSection()" style="border-style:dashed;border-color:rgba(123,47,190,.3);color:var(--purple)">+ Sección</button>
         </div>
       </div>
-      <div class="editor-main">
-        <div class="editor-topbar">
-          <div class="editor-tabs">
-            <button class="editor-tab active" id="etab-edit" onclick="setEditorTab('edit')">Editar</button>
-            <button class="editor-tab" id="etab-preview" onclick="setEditorTab('preview')">Vista previa</button>
+      <div class="ed-main">
+        <div class="ed-top">
+          <div class="ed-tabs">
+            <button class="ed-tab active" id="etab-ed"   onclick="setETab('edit')">Editar</button>
+            <button class="ed-tab"        id="etab-prev" onclick="setETab('preview')">Vista previa</button>
           </div>
-          <div class="editor-actions" id="editor-actions"></div>
+          <div id="ed-actions" style="display:flex;gap:8px;align-items:center"></div>
         </div>
-        <div class="editor-body" id="editor-body"></div>
+        <div class="ed-body" id="ed-body"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- VIEWER -->
+  <div id="page-viewer" style="display:none">
+    <div class="view-layout">
+      <div style="margin-bottom:20px"><button class="btn btn-ghost btn-sm" onclick="navTo('home')">← Volver al inicio</button></div>
+      <div id="viewer-content"></div>
     </div>
   </div>
 </div>
 
-<!-- ==================== MODALS ==================== -->
-<div id="modal-new-guide" class="modal-bg" style="display:none">
+<!-- MODALS -->
+<div id="modal-new" class="modal-bg" style="display:none">
   <div class="modal">
-    <div class="modal-title">Nueva guía</div>
-    <div class="field">
-      <label>Título</label>
-      <input type="text" id="ng-title" placeholder="Ej: Inducción para nuevos empleados">
-    </div>
-    <div class="field">
-      <label>Descripción (opcional)</label>
-      <textarea id="ng-desc" placeholder="Describe de qué trata esta guía..."></textarea>
-    </div>
+    <div class="modal-t">Nueva guía de capacitación</div>
+    <div class="f fl"><label>Título</label><input type="text" id="ng-title" class="finp" placeholder="Ej: Inducción para nuevos colaboradores"></div>
+    <div class="f fl"><label>Descripción</label><textarea id="ng-desc" class="fta" style="min-height:70px" placeholder="De qué trata esta guía..."></textarea></div>
+    <div class="f fl"><label>Categoría</label><select id="ng-cat" class="finp"></select></div>
     <div id="ng-msg" class="msg"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn" onclick="closeModal('modal-new-guide')">Cancelar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-new')">Cancelar</button>
       <button class="btn btn-primary" onclick="createGuide()">Crear guía</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-cat" class="modal-bg" style="display:none">
+  <div class="modal">
+    <div class="modal-t">Nueva categoría</div>
+    <div class="f fl"><label>Nombre</label><input type="text" id="nc-name" class="finp" placeholder="Ej: Recursos Humanos"></div>
+    <div class="f fl"><label>Emoji</label><input type="text" id="nc-emoji" class="finp" placeholder="📚" style="font-size:20px;text-align:center" maxlength="2"></div>
+    <div id="nc-msg" class="msg"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeModal('modal-cat')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createCategory()">Crear</button>
     </div>
   </div>
 </div>
 
 <div id="modal-role" class="modal-bg" style="display:none">
   <div class="modal">
-    <div class="modal-title">Cambiar rol de usuario</div>
-    <div class="field">
-      <label>Nombre</label>
-      <input type="text" id="role-user-name" readonly style="background:var(--bg2)">
-    </div>
-    <div class="field">
-      <label>Rol</label>
-      <select id="role-select">
+    <div class="modal-t">Cambiar rol</div>
+    <div class="f fl"><label>Usuario</label><input type="text" id="role-uname" class="finp" readonly></div>
+    <div class="f fl"><label>Rol</label>
+      <select id="role-sel" class="finp">
         <option value="viewer">viewer — Solo lectura</option>
-        <option value="editor">editor — Puede crear/editar guías propias</option>
+        <option value="editor">editor — Crea y edita</option>
         <option value="admin">admin — Acceso total</option>
       </select>
     </div>
-    <input type="hidden" id="role-user-id">
+    <input type="hidden" id="role-uid">
     <div id="role-msg" class="msg"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn" onclick="closeModal('modal-role')">Cancelar</button>
-      <button class="btn btn-primary" onclick="updateRole()">Guardar rol</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-role')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateRole()">Guardar</button>
     </div>
   </div>
 </div>
 
-<div id="modal-del-guide" class="modal-bg" style="display:none">
+<div id="modal-del" class="modal-bg" style="display:none">
   <div class="modal">
-    <div class="modal-title">Eliminar guía</div>
-    <p style="font-size:14px;color:var(--text2);margin-bottom:20px">¿Seguro que deseas eliminar esta guía? Esta acción no se puede deshacer.</p>
-    <input type="hidden" id="del-guide-id">
+    <div class="modal-t">Eliminar guía</div>
+    <p style="font-size:var(--text-sm);color:var(--text-s);margin-bottom:20px;line-height:1.6">¿Eliminar esta guía y todas sus secciones? Esta acción no se puede deshacer.</p>
+    <input type="hidden" id="del-id">
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="btn" onclick="closeModal('modal-del-guide')">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmDeleteGuide()">Eliminar</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-del')">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmDel()">Eliminar definitivamente</button>
     </div>
   </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// SCHEMA SQL
-// ─────────────────────────────────────────────
-const SCHEMA_SQL = `-- EJECUTAR EN: Supabase → SQL Editor
--- =============================================
+const SCHEMA=`-- Academy Now (DomoNow) Schema
+create table if not exists profiles(id uuid references auth.users primary key,email text unique not null,full_name text,role text not null default 'viewer' check(role in('admin','editor','viewer')),created_at timestamptz default now());
+create table if not exists categories(id uuid default gen_random_uuid() primary key,name text not null unique,emoji text default '📁',created_at timestamptz default now());
+create table if not exists guides(id uuid default gen_random_uuid() primary key,title text not null,description text,category_id uuid references categories(id) on delete set null,banner_url text default '',created_by uuid references profiles(id) on delete set null,is_published boolean default false,view_count integer default 0,created_at timestamptz default now(),updated_at timestamptz default now());
+create table if not exists sections(id uuid default gen_random_uuid() primary key,guide_id uuid references guides(id) on delete cascade,title text not null default 'Nueva sección',body text default '',youtube_url text default '',video_url text default '',order_index integer default 0,created_at timestamptz default now());
+create table if not exists section_images(id uuid default gen_random_uuid() primary key,section_id uuid references sections(id) on delete cascade,image_url text not null,order_index integer default 0);
+create table if not exists suggestions(id uuid default gen_random_uuid() primary key,user_id uuid references profiles(id) on delete set null,text text not null,status text default 'pending' check(status in('pending','reviewing','done')),created_at timestamptz default now());
+alter table profiles enable row level security;alter table categories enable row level security;alter table guides enable row level security;alter table sections enable row level security;alter table section_images enable row level security;alter table suggestions enable row level security;
+create policy "p_sel" on profiles for select using(true);create policy "p_ins" on profiles for insert with check(true);create policy "p_upd" on profiles for update using(auth.uid()=id or exists(select 1 from profiles p2 where p2.id=auth.uid() and p2.role='admin'));
+create policy "c_sel" on categories for select using(true);create policy "c_ins" on categories for insert with check(exists(select 1 from profiles where id=auth.uid() and role='admin'));create policy "c_del" on categories for delete using(exists(select 1 from profiles where id=auth.uid() and role='admin'));
+create policy "g_sel" on guides for select using(true);create policy "g_ins" on guides for insert with check(exists(select 1 from profiles where id=auth.uid() and role in('admin','editor')));create policy "g_upd" on guides for update using(created_by=auth.uid() or exists(select 1 from profiles where id=auth.uid() and role='admin'));create policy "g_del" on guides for delete using(created_by=auth.uid() or exists(select 1 from profiles where id=auth.uid() and role='admin'));
+create policy "s_sel" on sections for select using(true);create policy "s_ins" on sections for insert with check(exists(select 1 from guides g join profiles p on p.id=auth.uid() where g.id=guide_id and(g.created_by=auth.uid() or p.role='admin')));create policy "s_upd" on sections for update using(exists(select 1 from guides g join profiles p on p.id=auth.uid() where g.id=guide_id and(g.created_by=auth.uid() or p.role='admin')));create policy "s_del" on sections for delete using(exists(select 1 from guides g join profiles p on p.id=auth.uid() where g.id=guide_id and(g.created_by=auth.uid() or p.role='admin')));
+create policy "si_sel" on section_images for select using(true);create policy "si_ins" on section_images for insert with check(exists(select 1 from sections s join guides g on g.id=s.guide_id join profiles p on p.id=auth.uid() where s.id=section_id and(g.created_by=auth.uid() or p.role='admin')));create policy "si_del" on section_images for delete using(exists(select 1 from sections s join guides g on g.id=s.guide_id join profiles p on p.id=auth.uid() where s.id=section_id and(g.created_by=auth.uid() or p.role='admin')));
+create policy "sug_sel" on suggestions for select using(true);create policy "sug_ins" on suggestions for insert with check(auth.uid() is not null);create policy "sug_upd" on suggestions for update using(exists(select 1 from profiles where id=auth.uid() and role='admin'));
+create or replace function handle_new_user() returns trigger as $$ begin insert into profiles(id,email,full_name,role)values(new.id,new.email,coalesce(new.raw_user_meta_data->>'full_name',split_part(new.email,'@',1)),'viewer')on conflict(id)do nothing;return new;end;$$ language plpgsql security definer set search_path=public;
+drop trigger if exists on_auth_user_created on auth.users;create trigger on_auth_user_created after insert on auth.users for each row execute procedure handle_new_user();
+insert into storage.buckets(id,name,public)values('an-img','an-img',true)on conflict do nothing;insert into storage.buckets(id,name,public)values('an-vid','an-vid',true)on conflict do nothing;insert into storage.buckets(id,name,public)values('an-ban','an-ban',true)on conflict do nothing;
+create policy "stor_r" on storage.objects for select using(bucket_id in('an-img','an-ban','an-vid'));create policy "stor_i" on storage.objects for insert with check(bucket_id in('an-img','an-ban','an-vid')and auth.role()='authenticated');create policy "stor_d" on storage.objects for delete using(bucket_id in('an-img','an-ban','an-vid')and auth.role()='authenticated');`;
 
-create table if not exists profiles (
-  id uuid references auth.users primary key,
-  email text unique not null,
-  full_name text,
-  role text not null default 'viewer'
-    check (role in ('admin', 'editor', 'viewer')),
-  created_at timestamptz default now()
-);
+let sb=null,cUser=null,cProfile=null,cGuide=null,cSections=[],activeSec=null;
+let eTab='edit',ytPrev={},vidTab={},imgTab={};
+let allGuides=[],allCats=[],catFilter='all',search='';
 
-create table if not exists guides (
-  id uuid default gen_random_uuid() primary key,
-  title text not null,
-  description text,
-  created_by uuid references profiles(id) on delete set null,
-  is_published boolean default false,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
-);
+document.getElementById('schema-code').textContent=SCHEMA;
 
-create table if not exists sections (
-  id uuid default gen_random_uuid() primary key,
-  guide_id uuid references guides(id) on delete cascade,
-  title text not null default 'Nueva sección',
-  body text default '',
-  youtube_url text default '',
-  order_index integer default 0,
-  created_at timestamptz default now()
-);
-
-create table if not exists section_images (
-  id uuid default gen_random_uuid() primary key,
-  section_id uuid references sections(id) on delete cascade,
-  image_url text not null,
-  order_index integer default 0
-);
-
--- RLS
-alter table profiles enable row level security;
-alter table guides enable row level security;
-alter table sections enable row level security;
-alter table section_images enable row level security;
-
--- Profiles policies
-create policy "profiles_select" on profiles
-  for select using (true);
-create policy "profiles_insert" on profiles
-  for insert with check (auth.uid() = id);
-create policy "profiles_update" on profiles
-  for update using (
-    auth.uid() = id or
-    exists(select 1 from profiles p2 where p2.id = auth.uid() and p2.role = 'admin')
-  );
-
--- Guides policies
-create policy "guides_select" on guides for select using (true);
-create policy "guides_insert" on guides for insert with check (
-  exists(select 1 from profiles where id = auth.uid() and role in ('admin','editor'))
-);
-create policy "guides_update" on guides for update using (
-  created_by = auth.uid() or
-  exists(select 1 from profiles where id = auth.uid() and role = 'admin')
-);
-create policy "guides_delete" on guides for delete using (
-  created_by = auth.uid() or
-  exists(select 1 from profiles where id = auth.uid() and role = 'admin')
-);
-
--- Sections policies
-create policy "sections_select" on sections for select using (true);
-create policy "sections_insert" on sections for insert with check (
-  exists(
-    select 1 from guides g join profiles p on p.id = auth.uid()
-    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
-  )
-);
-create policy "sections_update" on sections for update using (
-  exists(
-    select 1 from guides g join profiles p on p.id = auth.uid()
-    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
-  )
-);
-create policy "sections_delete" on sections for delete using (
-  exists(
-    select 1 from guides g join profiles p on p.id = auth.uid()
-    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
-  )
-);
-
--- Section images policies
-create policy "section_images_select" on section_images for select using (true);
-create policy "section_images_insert" on section_images for insert with check (
-  exists(
-    select 1 from sections s
-    join guides g on g.id = s.guide_id
-    join profiles p on p.id = auth.uid()
-    where s.id = section_id and (g.created_by = auth.uid() or p.role = 'admin')
-  )
-);
-create policy "section_images_delete" on section_images for delete using (
-  exists(
-    select 1 from sections s
-    join guides g on g.id = s.guide_id
-    join profiles p on p.id = auth.uid()
-    where s.id = section_id and (g.created_by = auth.uid() or p.role = 'admin')
-  )
-);
-
--- Auto-create profile on signup
-create or replace function handle_new_user()
-returns trigger as $$
-begin
-  insert into profiles (id, email, full_name, role)
-  values (
-    new.id,
-    new.email,
-    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email,'@',1)),
-    'viewer'
-  );
-  return new;
-end;
-$$ language plpgsql security definer;
-
-drop trigger if exists on_auth_user_created on auth.users;
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure handle_new_user();`;
-
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
-let sb = null;
-let currentUser = null;
-let currentProfile = null;
-let currentGuide = null;
-let currentSections = [];
-let activeSectionId = null;
-let editorTab = 'edit';
-let ytPreviewState = {};
-let guides = [];
-
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
-document.getElementById('schema-code').textContent = SCHEMA_SQL;
-
-function initSupabase() {
-  const cfg = getConfig();
-  if (!cfg) return false;
-  try {
-    sb = supabase.createClient(cfg.url, cfg.key);
-    return true;
-  } catch(e) { return false; }
-}
-
-async function boot() {
-  if (!initSupabase()) { showScreen('setup'); return; }
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await loadProfile();
-    showScreen('app');
-    initApp();
-  } else {
-    showScreen('auth');
-  }
-  sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      await loadProfile();
-      showScreen('app');
-      initApp();
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null; currentProfile = null;
-      showScreen('auth');
-    }
+function getCfg(){try{const c=localStorage.getItem('an_cfg');return c?JSON.parse(c):null;}catch(e){return null;}}
+function initSB(){const c=getCfg();if(!c)return false;try{sb=supabase.createClient(c.url,c.key);return true;}catch(e){return false;}}
+async function boot(){
+  if(!initSB()){showS('setup');return;}
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){cUser=session.user;await loadProfile();showS('app');initApp();}
+  else showS('auth');
+  sb.auth.onAuthStateChange(async(ev,s)=>{
+    if(ev==='SIGNED_IN'&&s){cUser=s.user;await loadProfile();showS('app');initApp();}
+    else if(ev==='SIGNED_OUT'){cUser=null;cProfile=null;showS('auth');}
   });
 }
-
-function getConfig() {
-  try {
-    const c = localStorage.getItem('gcap_config');
-    return c ? JSON.parse(c) : null;
-  } catch(e) { return null; }
+function showS(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');}
+function saveConfig(){
+  const url=document.getElementById('cfg-url').value.trim(),key=document.getElementById('cfg-key').value.trim();
+  const msg=document.getElementById('setup-msg');
+  if(!url||!key){msg.textContent='Completa ambos campos.';msg.className='msg error';return;}
+  if(!url.includes('supabase')){msg.textContent='URL inválida.';msg.className='msg error';return;}
+  localStorage.setItem('an_cfg',JSON.stringify({url,key}));
+  if(!initSB()){msg.textContent='No se pudo conectar.';msg.className='msg error';return;}
+  showS('auth');
 }
+function clearConfig(){localStorage.removeItem('an_cfg');sb=null;showS('setup');}
+function toggleSchema(){const b=document.getElementById('schema-box');b.style.display=b.style.display==='none'?'block':'none';}
+function copySchema(){navigator.clipboard.writeText(SCHEMA).then(()=>alert('SQL copiado'));}
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
+let authMode='login';
+function showAuthTab(m){
+  authMode=m;
+  ['login','register'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('active',x===m));
+  document.getElementById('auth-reg-fields').style.display=m==='register'?'block':'none';
+  document.getElementById('auth-submit').textContent=m==='login'?'Ingresar':'Crear cuenta';
+  document.getElementById('auth-title-txt').textContent=m==='login'?'Bienvenido de vuelta':'Crear cuenta';
+  document.getElementById('auth-sub-txt').textContent=m==='login'?'Inicia sesión para continuar':'Únete a Academy Now';
+  document.getElementById('auth-msg').className='msg';
 }
-
-// ─────────────────────────────────────────────
-// SETUP
-// ─────────────────────────────────────────────
-function saveConfig() {
-  const url = document.getElementById('cfg-url').value.trim();
-  const key = document.getElementById('cfg-key').value.trim();
-  const msg = document.getElementById('setup-msg');
-  msg.className = 'msg';
-  if (!url || !key) { msg.textContent = 'Completa ambos campos.'; msg.className='msg error'; return; }
-  if (!url.includes('supabase.co')) { msg.textContent = 'URL inválida. Debe contener supabase.co'; msg.className='msg error'; return; }
-  localStorage.setItem('gcap_config', JSON.stringify({ url, key }));
-  if (!initSupabase()) { msg.textContent = 'No se pudo conectar. Revisa las credenciales.'; msg.className='msg error'; return; }
-  showScreen('auth');
-}
-
-function clearConfig() {
-  localStorage.removeItem('gcap_config');
-  sb = null;
-  showScreen('setup');
-}
-
-function toggleSchema() {
-  const box = document.getElementById('schema-box');
-  box.style.display = box.style.display === 'none' ? 'block' : 'none';
-}
-
-function copySchema() {
-  navigator.clipboard.writeText(SCHEMA_SQL).then(() => alert('SQL copiado al portapapeles'));
-}
-
-// ─────────────────────────────────────────────
-// AUTH
-// ─────────────────────────────────────────────
-let authMode = 'login';
-function showAuthTab(mode) {
-  authMode = mode;
-  document.getElementById('tab-login').classList.toggle('active', mode === 'login');
-  document.getElementById('tab-register').classList.toggle('active', mode === 'register');
-  document.getElementById('auth-register-fields').style.display = mode === 'register' ? 'block' : 'none';
-  document.getElementById('auth-submit').textContent = mode === 'login' ? 'Ingresar' : 'Crear cuenta';
-  document.getElementById('auth-msg').className = 'msg';
-}
-
-async function submitAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const pass = document.getElementById('auth-password').value;
-  const msg = document.getElementById('auth-msg');
-  msg.className = 'msg';
-  if (!email || !pass) { msg.textContent = 'Completa todos los campos.'; msg.className='msg error'; return; }
-  if (authMode === 'register') {
-    const name = document.getElementById('reg-name').value.trim();
-    const { error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
-    if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
-    msg.textContent = 'Cuenta creada. Revisa tu correo para confirmar.'; msg.className='msg success';
-  } else {
-    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-    if (error) { msg.textContent = 'Credenciales incorrectas.'; msg.className='msg error'; return; }
+async function submitAuth(){
+  const email=document.getElementById('auth-email').value.trim(),pass=document.getElementById('auth-pass').value;
+  const msg=document.getElementById('auth-msg');msg.className='msg';
+  if(!email||!pass){msg.textContent='Completa todos los campos.';msg.className='msg error';return;}
+  if(authMode==='register'){
+    const name=document.getElementById('reg-name').value.trim();
+    const{error}=await sb.auth.signUp({email,password:pass,options:{data:{full_name:name}}});
+    if(error){msg.textContent=error.message;msg.className='msg error';return;}
+    msg.textContent='¡Cuenta creada! Revisa tu correo.';msg.className='msg success';
+  }else{
+    const{error}=await sb.auth.signInWithPassword({email,password:pass});
+    if(error){msg.textContent='Credenciales incorrectas.';msg.className='msg error';return;}
   }
 }
-
-async function signOut() {
-  await sb.auth.signOut();
+async function signOut(){await sb.auth.signOut();}
+async function loadProfile(){
+  const{data}=await sb.from('profiles').select('*').eq('id',cUser.id).single();
+  cProfile=data||{id:cUser.id,email:cUser.email,full_name:cUser.email,role:'viewer'};
 }
+const isAdmin=()=>cProfile?.role==='admin';
+const isEditor=()=>cProfile?.role==='editor'||isAdmin();
 
-// ─────────────────────────────────────────────
-// PROFILE
-// ─────────────────────────────────────────────
-async function loadProfile() {
-  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  if (data) {
-    currentProfile = data;
-  } else {
-    currentProfile = { id: currentUser.id, email: currentUser.email, full_name: currentUser.email, role: 'viewer' };
-  }
+function initApp(){
+  const ini=(cProfile?.full_name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('user-av').textContent=ini;
+  document.getElementById('user-name').textContent=cProfile?.full_name||cProfile?.email||'Usuario';
+  const r=cProfile?.role||'viewer';
+  const rb=document.getElementById('user-role');rb.textContent=r;rb.className='role-badge role-'+r;
+  document.getElementById('nav-users').style.display=isAdmin()?'inline-block':'none';
+  document.getElementById('nav-analytics').style.display=isAdmin()?'inline-block':'none';
+  document.getElementById('nav-cats').style.display=isAdmin()?'inline-block':'none';
+  document.getElementById('btn-new').style.display=isEditor()?'inline-flex':'none';
+  navTo('home');
 }
-
-function isAdmin() { return currentProfile?.role === 'admin'; }
-function isEditor() { return currentProfile?.role === 'editor' || isAdmin(); }
-
-function initApp() {
-  const initials = (currentProfile?.full_name || 'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  document.getElementById('user-avatar').textContent = initials;
-  document.getElementById('user-name').textContent = currentProfile?.full_name || currentProfile?.email || 'Usuario';
-  const rb = document.getElementById('user-role-badge');
-  const role = currentProfile?.role || 'viewer';
-  rb.textContent = role;
-  rb.className = 'role-badge role-' + role;
-  document.getElementById('nav-users').style.display = isAdmin() ? 'inline-block' : 'none';
-  document.getElementById('btn-new-guide').style.display = isEditor() ? 'inline-block' : 'none';
-  navTo('guides');
-}
-
-// ─────────────────────────────────────────────
-// NAVIGATION
-// ─────────────────────────────────────────────
-function navTo(page) {
-  ['guides','users','editor'].forEach(p => {
-    document.getElementById('page-' + p).style.display = 'none';
+function navTo(page){
+  ['home','suggestions','analytics','users','cats','editor','viewer'].forEach(p=>{
+    const el=document.getElementById('page-'+p);if(el)el.style.display='none';
   });
-  ['nav-guides','nav-users'].forEach(n => {
-    const el = document.getElementById(n);
-    if (el) el.classList.remove('active');
-  });
-  if (page === 'guides') {
-    document.getElementById('page-guides').style.display = 'block';
-    document.getElementById('nav-guides').classList.add('active');
-    loadGuides();
-  } else if (page === 'users') {
-    document.getElementById('page-users').style.display = 'block';
-    document.getElementById('nav-users').classList.add('active');
-    loadUsers();
-  } else if (page === 'editor') {
-    document.getElementById('page-editor').style.display = 'flex';
-  }
+  document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+  const el=document.getElementById('page-'+page);
+  if(el)el.style.display=['editor','viewer'].includes(page)?'flex':'block';
+  const nm={'home':'nav-home','suggestions':'nav-suggestions','analytics':'nav-analytics','users':'nav-users','cats':'nav-cats'};
+  if(nm[page]){const n=document.getElementById(nm[page]);if(n)n.classList.add('active');}
+  if(page==='home')loadHome();
+  else if(page==='suggestions')loadSuggestions();
+  else if(page==='analytics')loadAnalytics();
+  else if(page==='users')loadUsers();
+  else if(page==='cats')loadCatsAdmin();
 }
 
-// ─────────────────────────────────────────────
-// GUIDES LIST
-// ─────────────────────────────────────────────
-async function loadGuides() {
-  const list = document.getElementById('guides-list');
-  list.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando guías...</div>`;
-  const { data, error } = await sb.from('guides')
-    .select('*, profiles(full_name, email), sections(id)')
-    .order('created_at', { ascending: false });
-  if (error) { list.innerHTML = `<div class="empty"><div class="empty-icon">!</div>${error.message}</div>`; return; }
-  guides = data || [];
-  const sub = document.getElementById('guides-subtitle');
-  sub.textContent = guides.length + ' guía' + (guides.length !== 1 ? 's' : '') + ' disponible' + (guides.length !== 1 ? 's' : '');
-  if (!guides.length) {
-    list.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>${isEditor() ? 'Crea la primera guía con el botón "Nueva guía"' : 'No hay guías disponibles aún'}</div>`;
-    return;
-  }
-  list.innerHTML = `<div class="guides-grid">${guides.map(g => renderGuideCard(g)).join('')}</div>`;
+async function loadHome(){
+  const[{data:guides},{data:cats}]=await Promise.all([
+    sb.from('guides').select('*,profiles(full_name,email),categories(name,emoji),sections(id)').order('created_at',{ascending:false}),
+    sb.from('categories').select('*').order('name')
+  ]);
+  allGuides=guides||[];allCats=cats||[];
+  const pub=allGuides.filter(g=>g.is_published);
+  const tv=allGuides.reduce((a,g)=>a+(g.view_count||0),0);
+  document.getElementById('stat-g').textContent=pub.length;
+  document.getElementById('stat-v').textContent=tv>999?(tv/1000).toFixed(1)+'k':tv;
+  document.getElementById('stat-c').textContent=allCats.length;
+  const bar=document.getElementById('cats-filter');
+  bar.innerHTML=`<div class="cat-chip active" onclick="setCat('all',this)">Todos</div>`+
+    allCats.map(c=>`<div class="cat-chip" onclick="setCat('${c.id}',this)">${c.emoji||'📁'} ${esc(c.name)}</div>`).join('');
+  renderGuides();
 }
-
-function renderGuideCard(g) {
-  const author = g.profiles?.full_name || g.profiles?.email || 'Desconocido';
-  const secCount = g.sections?.length || 0;
-  const canEdit = isAdmin() || g.created_by === currentUser?.id;
-  const date = new Date(g.created_at).toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' });
-  return `
-    <div class="guide-card" onclick="openGuide('${g.id}')">
-      <div class="guide-card-title">${escHtml(g.title)}</div>
-      ${g.description ? `<div style="font-size:13px;color:var(--text2);line-height:1.5;margin-top:4px">${escHtml(g.description.slice(0,80))}${g.description.length>80?'...':''}</div>` : ''}
-      <div class="guide-card-footer">
-        <div>
-          <span class="tag ${g.is_published ? 'tag-published' : 'tag-draft'}">${g.is_published ? 'Publicada' : 'Borrador'}</span>
-          ${secCount > 0 ? `<span class="tag tag-sections" style="margin-left:4px">${secCount} sección${secCount!==1?'es':''}</span>` : ''}
-        </div>
-        <div class="guide-card-actions" onclick="event.stopPropagation()">
-          ${canEdit ? `
-            <button class="btn btn-sm" onclick="event.stopPropagation();openGuide('${g.id}')">Editar</button>
-            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();openDeleteGuide('${g.id}')">✕</button>
-          ` : `<button class="btn btn-sm" onclick="event.stopPropagation();openGuidePreview('${g.id}')">Ver</button>`}
-        </div>
+function setCat(id,el){catFilter=id;document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderGuides();}
+function filterGuides(){search=document.getElementById('search-inp')?.value.toLowerCase()||'';renderGuides();}
+function renderGuides(){
+  const list=document.getElementById('guides-list');
+  let g=allGuides;
+  if(catFilter!=='all')g=g.filter(a=>a.category_id===catFilter);
+  if(search)g=g.filter(a=>a.title.toLowerCase().includes(search)||a.description?.toLowerCase().includes(search));
+  const vis=isEditor()?g:g.filter(a=>a.is_published);
+  if(!vis.length){list.innerHTML=`<div class="empty"><div class="empty-ico">📋</div><div class="empty-t">Sin guías${catFilter!=='all'?' en esta categoría':''}</div><p style="font-size:var(--text-sm)">${isEditor()?'Crea la primera con "+ Nueva guía"':'No hay contenido publicado aún'}</p></div>`;return;}
+  const mv=Math.max(...vis.map(g=>g.view_count||0),1);
+  list.innerHTML=`<div class="grid">${vis.map(g=>{
+    const cat=g.categories;const canEdit=isAdmin()||g.created_by===cUser?.id;
+    const isTrend=(g.view_count||0)>0&&(g.view_count/mv)>0.55;
+    return `<div class="card" onclick="openArticle('${g.id}')">
+      <div class="card-ban">
+        ${g.banner_url?`<img src="${ea(g.banner_url)}" alt="" onerror="this.style.display='none'">`:`<div class="card-ban-ph">${cat?.emoji||'📄'}</div>`}
+        ${isTrend?`<span class="trend-badge">🔥 Tendencia</span>`:''}
+        ${!g.is_published?`<span style="position:absolute;top:10px;left:10px;background:rgba(26,10,46,.75);color:#fff;font-size:10px;padding:3px 9px;border-radius:99px;font-weight:700">Borrador</span>`:''}
       </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:8px">${author} · ${date}</div>
-    </div>
-  `;
-}
-
-// ─────────────────────────────────────────────
-// GUIDE MODAL
-// ─────────────────────────────────────────────
-function openNewGuideModal() {
-  document.getElementById('ng-title').value = '';
-  document.getElementById('ng-desc').value = '';
-  document.getElementById('ng-msg').className = 'msg';
-  document.getElementById('modal-new-guide').style.display = 'flex';
-}
-
-async function createGuide() {
-  const title = document.getElementById('ng-title').value.trim();
-  const desc = document.getElementById('ng-desc').value.trim();
-  const msg = document.getElementById('ng-msg');
-  if (!title) { msg.textContent = 'El título es obligatorio.'; msg.className='msg error'; return; }
-  const { data, error } = await sb.from('guides').insert({ title, description: desc, created_by: currentUser.id }).select().single();
-  if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
-  closeModal('modal-new-guide');
-  openGuide(data.id);
-}
-
-function openDeleteGuide(id) {
-  document.getElementById('del-guide-id').value = id;
-  document.getElementById('modal-del-guide').style.display = 'flex';
-}
-
-async function confirmDeleteGuide() {
-  const id = document.getElementById('del-guide-id').value;
-  const { error } = await sb.from('guides').delete().eq('id', id);
-  if (!error) { closeModal('modal-del-guide'); loadGuides(); }
-}
-
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-// ─────────────────────────────────────────────
-// GUIDE EDITOR
-// ─────────────────────────────────────────────
-async function openGuide(id) {
-  const { data: guide } = await sb.from('guides').select('*').eq('id', id).single();
-  if (!guide) return;
-  currentGuide = guide;
-  const canEdit = isAdmin() || guide.created_by === currentUser?.id;
-  const { data: sections } = await sb.from('sections')
-    .select('*, section_images(*)')
-    .eq('guide_id', id)
-    .order('order_index');
-  currentSections = sections || [];
-  activeSectionId = currentSections[0]?.id || null;
-  editorTab = 'edit';
-  ytPreviewState = {};
-  navTo('editor');
-  renderSidebar();
-  renderEditorBody();
-  document.getElementById('btn-publish').textContent = guide.is_published ? 'Despublicar' : 'Publicar';
-  document.getElementById('btn-add-sec').style.display = canEdit ? 'block' : 'none';
-}
-
-async function openGuidePreview(id) {
-  await openGuide(id);
-  setEditorTab('preview');
-}
-
-function renderSidebar() {
-  const g = currentGuide;
-  document.getElementById('sidebar-title').textContent = g.title;
-  document.getElementById('sidebar-sub').textContent = currentSections.length + ' sección' + (currentSections.length !== 1 ? 'es' : '');
-  const canEdit = isAdmin() || g.created_by === currentUser?.id;
-  document.getElementById('btn-publish').style.display = canEdit ? 'inline-block' : 'none';
-  const list = document.getElementById('sections-list');
-  if (!currentSections.length) {
-    list.innerHTML = `<div style="padding:12px;font-size:12px;color:var(--text3);text-align:center">Sin secciones aún</div>`;
-    return;
-  }
-  list.innerHTML = currentSections.map((s, i) => {
-    const imgs = s.section_images?.length || 0;
-    return `
-      <div class="sec-item ${s.id === activeSectionId ? 'active' : ''}" onclick="selectSection('${s.id}')">
-        <span class="sec-num">${i+1}</span>
-        <span class="sec-label">${escHtml(s.title)}</span>
-        <div class="sec-badges">
-          ${s.youtube_url ? '<span class="sec-badge sec-badge-yt">▶</span>' : ''}
-          ${imgs > 0 ? `<span class="sec-badge sec-badge-img">${imgs}</span>` : ''}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function selectSection(id) {
-  activeSectionId = id;
-  renderSidebar();
-  renderEditorBody();
-}
-
-function renderEditorBody() {
-  if (editorTab === 'preview') { renderPreview(); return; }
-  renderSectionEdit();
-}
-
-function renderSectionEdit() {
-  const body = document.getElementById('editor-body');
-  const canEdit = isAdmin() || currentGuide.created_by === currentUser?.id;
-  if (!currentSections.length) {
-    body.innerHTML = canEdit
-      ? `<div class="empty"><div class="empty-icon">+</div>Agrega la primera sección con el botón de abajo</div>`
-      : `<div class="empty"><div class="empty-icon">📋</div>Esta guía no tiene secciones aún</div>`;
-    renderEditorActions();
-    return;
-  }
-  const sec = currentSections.find(s => s.id === activeSectionId);
-  if (!sec) { body.innerHTML = ''; return; }
-  const embed = ytEmbed(sec.youtube_url);
-  const showYt = ytPreviewState[sec.id] && embed;
-  const imgs = sec.section_images || [];
-  if (!canEdit) {
-    body.innerHTML = renderSectionPreviewOnly(sec);
-    renderEditorActions();
-    return;
-  }
-  body.innerHTML = `
-    <div class="form-section">
-      <div class="form-group">
-        <label class="form-label">Título de la sección</label>
-        <input class="form-input" id="sec-title-inp" type="text" value="${escAttr(sec.title)}" placeholder="Ej: Módulo 1 — Bienvenida" oninput="updateSecField('title', this.value)">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Contenido</label>
-        <textarea class="form-textarea" id="sec-body-inp" placeholder="Escribe el contenido de esta sección..." oninput="updateSecField('body', this.value)">${escHtml(sec.body)}</textarea>
-      </div>
-      <hr class="divider">
-      <div class="form-group">
-        <label class="form-label">Video de YouTube</label>
-        <div class="form-row">
-          <input class="form-input" id="sec-yt-inp" type="text" value="${escAttr(sec.youtube_url)}" placeholder="https://www.youtube.com/watch?v=..." oninput="updateSecField('youtube_url', this.value)">
-          <button class="btn btn-sm" onclick="toggleYtPreview('${sec.id}')">${showYt ? 'Ocultar' : 'Previsualizar'}</button>
-        </div>
-        ${sec.youtube_url && !embed ? `<div class="url-invalid">URL de YouTube no válida</div>` : ''}
-        ${sec.youtube_url && !embed ? '' : ''}
-        ${showYt ? `<div class="media-preview-box"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
-      </div>
-      <hr class="divider">
-      <div class="form-group">
-        <label class="form-label">Imágenes</label>
-        <div class="form-row">
-          <input class="form-input" id="img-url-inp" type="text" placeholder="URL de imagen https://...">
-          <button class="btn btn-sm" onclick="addImage('${sec.id}')">+ Agregar</button>
-        </div>
-        <div class="hint">Pega la URL de cualquier imagen web y presiona Agregar o Enter</div>
-        ${imgs.length > 0 ? `
-          <div class="img-grid">
-            ${imgs.map(img => `
-              <div class="img-thumb">
-                <img src="${escAttr(img.image_url)}" alt="" onerror="this.style.display='none'">
-                <button class="img-del" onclick="removeImage('${img.id}','${sec.id}')">×</button>
-              </div>
-            `).join('')}
+      <div class="card-body">
+        ${cat?`<div class="card-cat">${cat.emoji||''} ${esc(cat.name)}</div>`:''}
+        <div class="card-title">${esc(g.title)}</div>
+        ${g.description?`<div class="card-desc">${esc(g.description.slice(0,80))}${g.description.length>80?'...':''}</div>`:''}
+        <div class="card-foot">
+          <span class="card-views">👁 ${g.view_count||0}</span>
+          <div style="display:flex;gap:5px" onclick="event.stopPropagation()">
+            ${canEdit?`<button class="btn btn-sm btn-pghost" onclick="event.stopPropagation();editGuide('${g.id}')">Editar</button>
+            <button class="btn btn-xs btn-danger" onclick="event.stopPropagation();openDel('${g.id}')">✕</button>`:''}
           </div>
-        ` : ''}
+        </div>
       </div>
-      <hr class="divider">
-      <div style="display:flex;gap:8px;align-items:center">
-        <div class="hint" style="flex:1">Sección ${currentSections.indexOf(sec)+1} de ${currentSections.length}</div>
-        ${currentSections.indexOf(sec) > 0 ? `<button class="btn btn-sm" onclick="moveSection('${sec.id}',-1)">↑ Subir</button>` : ''}
-        ${currentSections.indexOf(sec) < currentSections.length-1 ? `<button class="btn btn-sm" onclick="moveSection('${sec.id}',1)">↓ Bajar</button>` : ''}
-        <button class="btn btn-sm btn-danger" onclick="deleteSection('${sec.id}')">Eliminar sección</button>
+    </div>`;}).join('')}</div>`;
+}
+
+async function openArticle(id){
+  const g0=allGuides.find(g=>g.id===id);
+  if(g0){const n=(g0.view_count||0)+1;await sb.from('guides').update({view_count:n}).eq('id',id);g0.view_count=n;}
+  const{data:g}=await sb.from('guides').select('*,profiles(full_name,email),categories(name,emoji)').eq('id',id).single();if(!g)return;
+  const{data:secs}=await sb.from('sections').select('*,section_images(*)').eq('guide_id',id).order('order_index');
+  const ss=secs||[];const canEdit=isAdmin()||g.created_by===cUser?.id;
+  document.getElementById('viewer-content').innerHTML=`
+    <div class="view-ban">
+      ${g.banner_url?`<img src="${ea(g.banner_url)}" alt="">`:`<div class="view-ban-ph">${g.categories?.emoji||'📄'}</div>`}
+      <div class="view-ov">
+        ${g.categories?`<div class="view-cat">${g.categories.emoji||''} ${esc(g.categories.name)}</div>`:''}
+        <div class="view-title">${esc(g.title)}</div>
       </div>
     </div>
-  `;
-  const imgInp = document.getElementById('img-url-inp');
-  if (imgInp) imgInp.addEventListener('keydown', e => { if (e.key === 'Enter') addImage(sec.id); });
-  renderEditorActions();
-}
-
-function renderSectionPreviewOnly(sec) {
-  const embed = ytEmbed(sec.youtube_url);
-  const imgs = sec.section_images || [];
-  return `
-    <div class="form-section">
-      <h2 style="font-size:18px;font-weight:500;margin-bottom:12px">${escHtml(sec.title)}</h2>
-      ${sec.body ? `<p style="font-size:15px;color:var(--text2);line-height:1.75;white-space:pre-wrap;margin-bottom:16px">${escHtml(sec.body)}</p>` : ''}
-      ${embed ? `<div class="media-preview-box" style="margin-bottom:16px"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
-      ${imgs.length > 0 ? `<div class="img-grid">${imgs.map(i=>`<div class="img-thumb"><img src="${escAttr(i.image_url)}" alt=""></div>`).join('')}</div>` : ''}
+    <div class="view-meta">
+      <span style="font-weight:600">Por ${esc(g.profiles?.full_name||g.profiles?.email||'—')}</span>
+      <span>·</span><span>${new Date(g.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'})}</span>
+      <span>·</span><span>👁 ${g.view_count||0} lecturas</span>
+      ${canEdit?`<button class="btn btn-sm btn-pghost" style="margin-left:auto" onclick="editGuide('${g.id}')">✏ Editar</button>`:''}
     </div>
-  `;
+    ${g.description?`<p style="font-size:var(--text-md);color:var(--text-s);line-height:1.8;margin-bottom:32px;border-left:3px solid var(--amber);padding-left:16px">${esc(g.description)}</p>`:''}
+    ${ss.map((s,i)=>{const em=ytEmb(s.youtube_url);const imgs=s.section_images||[];
+      return `<div class="view-sec">
+        <div class="view-sec-n">Sección ${i+1}</div>
+        <div class="view-sec-t">${esc(s.title)}</div>
+        ${s.body?`<div class="view-sec-b">${esc(s.body)}</div>`:''}
+        ${em?`<div class="view-vid"><iframe src="${em}" allowfullscreen></iframe></div>`:''}
+        ${s.video_url?`<div class="view-vid"><video src="${ea(s.video_url)}" controls></video></div>`:''}
+        ${imgs.length?`<div class="view-imgs">${imgs.map(i=>`<div class="view-img"><img src="${ea(i.image_url)}" alt=""></div>`).join('')}</div>`:''}
+      </div>`;}).join('')}`;
+  navTo('viewer');
 }
 
-function renderEditorActions() {
-  const el = document.getElementById('editor-actions');
-  if (!el) return;
-  const canEdit = isAdmin() || currentGuide.created_by === currentUser?.id;
-  if (!canEdit || !activeSectionId) { el.innerHTML = ''; return; }
-  el.innerHTML = `<button class="btn btn-sm btn-primary" onclick="saveSection()">Guardar sección</button>`;
+async function openNewModal(){
+  const{data:cats}=await sb.from('categories').select('*').order('name');
+  document.getElementById('ng-cat').innerHTML=`<option value="">Sin categoría</option>`+(cats||[]).map(c=>`<option value="${c.id}">${c.emoji||''} ${esc(c.name)}</option>`).join('');
+  document.getElementById('ng-title').value='';document.getElementById('ng-desc').value='';
+  document.getElementById('ng-msg').className='msg';document.getElementById('modal-new').style.display='flex';
 }
+async function createGuide(){
+  const title=document.getElementById('ng-title').value.trim(),desc=document.getElementById('ng-desc').value.trim(),catId=document.getElementById('ng-cat').value||null;
+  const msg=document.getElementById('ng-msg');
+  if(!title){msg.textContent='El título es obligatorio.';msg.className='msg error';return;}
+  const{data,error}=await sb.from('guides').insert({title,description:desc,category_id:catId,created_by:cUser.id}).select().single();
+  if(error){msg.textContent=error.message;msg.className='msg error';return;}
+  closeModal('modal-new');editGuide(data.id);
+}
+async function editGuide(id){
+  const{data:guide}=await sb.from('guides').select('*,categories(name,emoji)').eq('id',id).single();if(!guide)return;
+  cGuide=guide;
+  const{data:secs}=await sb.from('sections').select('*,section_images(*)').eq('guide_id',id).order('order_index');
+  cSections=secs||[];activeSec=cSections[0]?.id||null;
+  eTab='edit';ytPrev={};vidTab={};imgTab={};
+  ['home','suggestions','analytics','users','cats','viewer'].forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
+  document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-editor').style.display='flex';
+  renderSide();renderEdBody();
+  const ce=isAdmin()||guide.created_by===cUser?.id;
+  document.getElementById('btn-pub').textContent=guide.is_published?'Despublicar':'Publicar';
+  document.getElementById('btn-pub').style.display=ce?'inline-flex':'none';
+  document.getElementById('btn-add-sec').style.display=ce?'block':'none';
+}
+function openDel(id){document.getElementById('del-id').value=id;document.getElementById('modal-del').style.display='flex';}
+async function confirmDel(){await sb.from('guides').delete().eq('id',document.getElementById('del-id').value);closeModal('modal-del');loadHome();}
+function closeModal(id){document.getElementById(id).style.display='none';}
 
-function renderPreview() {
-  const body = document.getElementById('editor-body');
-  if (!currentSections.length) {
-    body.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>No hay secciones para previsualizar</div>`;
-    return;
-  }
-  body.innerHTML = `
-    <div class="preview-wrap">
-      <div class="preview-title">${escHtml(currentGuide.title)}</div>
-      <div class="preview-count">${currentSections.length} sección${currentSections.length!==1?'es':''}</div>
-      ${currentSections.map((s,i) => {
-        const embed = ytEmbed(s.youtube_url);
-        const imgs = s.section_images || [];
-        return `
-          <div class="preview-sec">
-            <div class="preview-sec-num">Sección ${i+1}</div>
-            <div class="preview-sec-title">${escHtml(s.title)}</div>
-            ${s.body ? `<div class="preview-sec-body">${escHtml(s.body)}</div>` : ''}
-            ${embed ? `<div class="preview-video"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
-            ${imgs.length > 0 ? `<div class="img-grid" style="margin-top:12px">${imgs.map(img=>`<div class="img-thumb"><img src="${escAttr(img.image_url)}" alt=""></div>`).join('')}</div>` : ''}
+function renderSide(){
+  document.getElementById('side-title').textContent=cGuide.title;
+  document.getElementById('side-sub').textContent=`${cGuide.categories?.emoji||''} ${cGuide.categories?.name||'Sin categoría'} · ${cSections.length} sección${cSections.length!==1?'es':''}`;
+  const list=document.getElementById('sec-list');
+  if(!cSections.length){list.innerHTML=`<div style="padding:16px 12px;font-size:var(--text-xs);color:var(--text-m);text-align:center">Sin secciones</div>`;return;}
+  list.innerHTML=cSections.map((s,i)=>{
+    const imgs=s.section_images?.length||0;
+    return `<div class="sec-item ${s.id===activeSec?'active':''}" onclick="selSec('${s.id}')">
+      <span class="sec-num">${i+1}</span>
+      <span class="sec-lbl">${esc(s.title)}</span>
+      <div style="display:flex;gap:3px;flex-shrink:0">
+        ${s.youtube_url?'<span class="sec-bdg sec-yt">YT</span>':''}
+        ${s.video_url?'<span class="sec-bdg sec-vid">▶</span>':''}
+        ${imgs?`<span class="sec-bdg sec-img">${imgs}</span>`:''}
+      </div>
+    </div>`;}).join('');
+}
+function selSec(id){activeSec=id;renderSide();renderEdBody();}
+function renderEdBody(){if(eTab==='preview'){renderPrev();return;}renderSecEdit();}
+
+function renderSecEdit(){
+  const body=document.getElementById('ed-body');
+  const ce=isAdmin()||cGuide.created_by===cUser?.id;
+  if(!cSections.length){body.innerHTML=`<div class="empty"><div class="empty-ico">+</div><div class="empty-t">${ce?'Agrega la primera sección':'Sin secciones'}</div></div>`;renderEdActs();return;}
+  const sec=cSections.find(s=>s.id===activeSec);if(!sec){body.innerHTML='';return;}
+  if(!ce){body.innerHTML=renderRO(sec);renderEdActs();return;}
+  const vt=vidTab[sec.id]||'youtube';const it=imgTab[sec.id]||'url';
+  const em=ytEmb(sec.youtube_url);const syp=ytPrev[sec.id]&&em;
+  const imgs=sec.section_images||[];const idx=cSections.indexOf(sec);
+  body.innerHTML=`<div class="fsec">
+    <div class="fg">
+      <label class="flbl">Banner / portada del artículo</label>
+      <div class="ban-up" id="ban-drop" onclick="document.getElementById('ban-inp').click()"
+        ondragover="dov(event,'ban-drop')" ondragleave="dlv(event,'ban-drop')" ondrop="banDrop(event)">
+        <input type="file" id="ban-inp" accept="image/*" style="display:none" onchange="uploadBanner(this)">
+        ${cGuide.banner_url
+          ?`<img src="${ea(cGuide.banner_url)}" alt="" onerror="this.style.display='none'"><button class="ban-ov-btn" onclick="event.stopPropagation();document.getElementById('ban-inp').click()">Cambiar imagen</button>`
+          :`<div class="ban-ov"><div style="font-size:30px;opacity:.5">🖼</div><div style="font-size:var(--text-base);font-weight:600;color:var(--text-s)">Subir banner de portada</div><div style="font-size:var(--text-xs);color:var(--text-m);margin-top:4px">Arrastra o haz clic · Recomendado 1200×400px</div></div>`}
+      </div>
+      <div class="uprog" id="ban-prog"><div class="uprog-info"><span id="ban-pl">Subiendo...</span><span id="ban-pp">0%</span></div><div class="pbar-wrap"><div class="pbar" id="ban-pb"></div></div></div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><label class="flbl">Título de la sección</label>
+      <input class="finp" id="sec-ti" type="text" value="${ea(sec.title)}" placeholder="Ej: Módulo 1 — Introducción" oninput="updSec('title',this.value)">
+    </div>
+    <div class="fg"><label class="flbl">Contenido</label>
+      <textarea class="fta" id="sec-bo" placeholder="Escribe el contenido..." oninput="updSec('body',this.value)">${esc(sec.body)}</textarea>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg"><label class="flbl">Video</label>
+      <div class="mtabs">
+        <button class="mtab ${vt==='youtube'?'active':''}" onclick="setVT('${sec.id}','youtube')">Link YouTube</button>
+        <button class="mtab ${vt==='upload'?'active':''}" onclick="setVT('${sec.id}','upload')">Subir video</button>
+      </div>
+      ${vt==='youtube'?`
+        <div class="frow">
+          <input class="finp" id="sec-yt" type="text" value="${ea(sec.youtube_url)}" placeholder="https://www.youtube.com/watch?v=..." oninput="updSec('youtube_url',this.value)">
+          <button class="btn btn-ghost btn-sm" onclick="tYTP('${sec.id}')">${syp?'Ocultar':'Ver video'}</button>
+        </div>
+        ${sec.youtube_url&&!em?`<div class="finval">⚠ URL no válida</div>`:''}
+        ${syp?`<div class="med-prev" style="margin-top:12px"><iframe src="${em}" allowfullscreen></iframe></div>`:''}
+      `:`
+        ${sec.video_url?`
+          <div class="cur-med"><div class="cur-med-ico">🎬</div><div class="cur-med-info"><div class="cur-med-name">Video cargado</div><div class="cur-med-sub">Guardado en Storage</div></div><button class="cur-med-del" onclick="rmVid('${sec.id}')">×</button></div>
+          <div class="med-prev"><video src="${ea(sec.video_url)}" controls></video></div>
+        `:`
+          <div class="drop" id="vid-drop-${sec.id}" onclick="document.getElementById('vid-inp-${sec.id}').click()" ondragover="dov(event,'vid-drop-${sec.id}')" ondragleave="dlv(event,'vid-drop-${sec.id}')" ondrop="vidDrop(event,'${sec.id}')">
+            <input type="file" id="vid-inp-${sec.id}" accept="video/*" style="display:none" onchange="uploadVideo(this,'${sec.id}')">
+            <div class="drop-ico">🎬</div><div class="drop-txt">Arrastra tu video aquí</div><div class="drop-sub">MP4, MOV, WebM · máx 500 MB</div>
           </div>
-        `;
-      }).join('')}
+          <div class="uprog" id="vid-prog-${sec.id}"><div class="uprog-info"><span id="vid-pl-${sec.id}">Subiendo...</span><span id="vid-pp-${sec.id}">0%</span></div><div class="pbar-wrap"><div class="pbar" id="vid-pb-${sec.id}"></div></div></div>
+        `}
+      `}
     </div>
-  `;
-}
-
-function setEditorTab(tab) {
-  editorTab = tab;
-  document.getElementById('etab-edit').classList.toggle('active', tab === 'edit');
-  document.getElementById('etab-preview').classList.toggle('active', tab === 'preview');
-  renderEditorBody();
-}
-
-function toggleYtPreview(id) {
-  ytPreviewState[id] = !ytPreviewState[id];
-  renderEditorBody();
-}
-
-// ─────────────────────────────────────────────
-// SECTION CRUD
-// ─────────────────────────────────────────────
-async function addSection() {
-  const order = currentSections.length;
-  const { data, error } = await sb.from('sections').insert({
-    guide_id: currentGuide.id,
-    title: 'Nueva sección',
-    body: '',
-    youtube_url: '',
-    order_index: order
-  }).select('*, section_images(*)').single();
-  if (error) { alert(error.message); return; }
-  currentSections.push(data);
-  activeSectionId = data.id;
-  renderSidebar();
-  renderEditorBody();
-}
-
-function updateSecField(field, value) {
-  const sec = currentSections.find(s => s.id === activeSectionId);
-  if (sec) sec[field] = value;
-  if (field === 'title') {
-    const item = document.querySelector(`.sec-item[onclick="selectSection('${activeSectionId}')"] .sec-label`);
-    if (item) item.textContent = value || 'Sin título';
-  }
-  if (field === 'youtube_url') {
-    const embed = ytEmbed(value);
-    const btn = document.querySelector('#editor-body button');
-    // just update state
-  }
-}
-
-async function saveSection() {
-  const sec = currentSections.find(s => s.id === activeSectionId);
-  if (!sec) return;
-  const { error } = await sb.from('sections').update({
-    title: sec.title,
-    body: sec.body,
-    youtube_url: sec.youtube_url
-  }).eq('id', sec.id);
-  if (error) { alert('Error al guardar: ' + error.message); return; }
-  await sb.from('guides').update({ updated_at: new Date().toISOString() }).eq('id', currentGuide.id);
-  renderSidebar();
-  // brief visual feedback
-  const btn = document.querySelector('#editor-actions button');
-  if (btn) { const orig = btn.textContent; btn.textContent = '✓ Guardado'; setTimeout(() => btn.textContent = orig, 1500); }
-}
-
-async function deleteSection(id) {
-  if (!confirm('¿Eliminar esta sección?')) return;
-  const { error } = await sb.from('sections').delete().eq('id', id);
-  if (error) { alert(error.message); return; }
-  currentSections = currentSections.filter(s => s.id !== id);
-  activeSectionId = currentSections[0]?.id || null;
-  renderSidebar();
-  renderEditorBody();
-}
-
-async function moveSection(id, dir) {
-  const idx = currentSections.findIndex(s => s.id === id);
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= currentSections.length) return;
-  [currentSections[idx], currentSections[newIdx]] = [currentSections[newIdx], currentSections[idx]];
-  for (let i = 0; i < currentSections.length; i++) {
-    await sb.from('sections').update({ order_index: i }).eq('id', currentSections[i].id);
-    currentSections[i].order_index = i;
-  }
-  renderSidebar();
-  renderEditorBody();
-}
-
-// ─────────────────────────────────────────────
-// IMAGES
-// ─────────────────────────────────────────────
-async function addImage(sectionId) {
-  const inp = document.getElementById('img-url-inp');
-  if (!inp) return;
-  const url = inp.value.trim();
-  if (!url) return;
-  const sec = currentSections.find(s => s.id === sectionId);
-  const order = sec?.section_images?.length || 0;
-  const { data, error } = await sb.from('section_images').insert({ section_id: sectionId, image_url: url, order_index: order }).select().single();
-  if (error) { alert(error.message); return; }
-  if (!sec.section_images) sec.section_images = [];
-  sec.section_images.push(data);
-  inp.value = '';
-  renderSidebar();
-  renderEditorBody();
-}
-
-async function removeImage(imgId, sectionId) {
-  const { error } = await sb.from('section_images').delete().eq('id', imgId);
-  if (error) { alert(error.message); return; }
-  const sec = currentSections.find(s => s.id === sectionId);
-  if (sec) sec.section_images = sec.section_images.filter(i => i.id !== imgId);
-  renderSidebar();
-  renderEditorBody();
-}
-
-// ─────────────────────────────────────────────
-// PUBLISH
-// ─────────────────────────────────────────────
-async function togglePublish() {
-  const newState = !currentGuide.is_published;
-  const { error } = await sb.from('guides').update({ is_published: newState }).eq('id', currentGuide.id);
-  if (error) { alert(error.message); return; }
-  currentGuide.is_published = newState;
-  document.getElementById('btn-publish').textContent = newState ? 'Despublicar' : 'Publicar';
-}
-
-// ─────────────────────────────────────────────
-// USERS (ADMIN)
-// ─────────────────────────────────────────────
-async function loadUsers() {
-  if (!isAdmin()) return;
-  const list = document.getElementById('users-list');
-  list.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando usuarios...</div>`;
-  const { data, error } = await sb.from('profiles').select('*').order('created_at');
-  if (error) { list.innerHTML = `<div class="empty">${error.message}</div>`; return; }
-  list.innerHTML = `
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th>Nombre</th><th>Correo</th><th>Rol</th><th>Registrado</th><th>Acciones</th>
-        </tr></thead>
-        <tbody>
-          ${(data||[]).map(u => `
-            <tr>
-              <td>${escHtml(u.full_name || '—')}</td>
-              <td style="color:var(--text2)">${escHtml(u.email)}</td>
-              <td><span class="role-badge role-${u.role}">${u.role}</span></td>
-              <td style="color:var(--text3)">${new Date(u.created_at).toLocaleDateString('es-CO')}</td>
-              <td>
-                ${u.id !== currentUser.id ? `<button class="btn btn-sm" onclick="openRoleModal('${u.id}','${escAttr(u.full_name||u.email)}','${u.role}')">Cambiar rol</button>` : '<span style="font-size:12px;color:var(--text3)">Tú</span>'}
-              </td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
+    <div class="fdiv"></div>
+    <div class="fg"><label class="flbl">Imágenes</label>
+      <div class="mtabs">
+        <button class="mtab ${it==='url'?'active':''}" onclick="setIT('${sec.id}','url')">Por URL</button>
+        <button class="mtab ${it==='upload'?'active':''}" onclick="setIT('${sec.id}','upload')">Subir imagen</button>
+      </div>
+      ${it==='url'?`
+        <div class="frow"><input class="finp" id="img-url" type="text" placeholder="https://..."><button class="btn btn-ghost btn-sm" onclick="addImgUrl('${sec.id}')">+ Agregar</button></div>
+        <div class="fhint">Pega la URL y presiona Agregar o Enter</div>
+      `:`
+        <div class="drop" id="img-drop-${sec.id}" onclick="document.getElementById('img-inp-${sec.id}').click()" ondragover="dov(event,'img-drop-${sec.id}')" ondragleave="dlv(event,'img-drop-${sec.id}')" ondrop="imgDrop(event,'${sec.id}')">
+          <input type="file" id="img-inp-${sec.id}" accept="image/*" multiple style="display:none" onchange="uploadImgs(this,'${sec.id}')">
+          <div class="drop-ico">🖼</div><div class="drop-txt">Arrastra imágenes aquí</div><div class="drop-sub">JPG, PNG, GIF, WebP · varias a la vez</div>
+        </div>
+        <div class="uprog" id="img-prog-${sec.id}"><div class="uprog-info"><span id="img-pl-${sec.id}">Subiendo...</span><span id="img-pp-${sec.id}">0%</span></div><div class="pbar-wrap"><div class="pbar" id="img-pb-${sec.id}"></div></div></div>
+      `}
+      ${imgs.length?`<div class="img-grid">${imgs.map(img=>`<div class="img-th"><img src="${ea(img.image_url)}" alt=""><button class="img-del" onclick="rmImg('${img.id}','${sec.id}')">×</button></div>`).join('')}</div>`:''}
     </div>
-  `;
+    <div class="fdiv"></div>
+    <div class="sec-ord">
+      <span class="fhint" style="flex:1;margin:0">Sección ${idx+1} de ${cSections.length}</span>
+      ${idx>0?`<button class="btn btn-ghost btn-sm" onclick="moveSec('${sec.id}',-1)">↑ Subir</button>`:''}
+      ${idx<cSections.length-1?`<button class="btn btn-ghost btn-sm" onclick="moveSec('${sec.id}',1)">↓ Bajar</button>`:''}
+      <button class="btn btn-danger btn-sm" onclick="delSec('${sec.id}')">Eliminar</button>
+    </div>
+  </div>`;
+  const iu=document.getElementById('img-url');if(iu)iu.addEventListener('keydown',e=>{if(e.key==='Enter')addImgUrl(sec.id);});
+  renderEdActs();
+}
+function renderRO(sec){
+  const em=ytEmb(sec.youtube_url);const imgs=sec.section_images||[];
+  return `<div class="fsec"><h2 style="font-size:var(--text-xl);font-weight:700;margin-bottom:14px;letter-spacing:-0.3px;color:var(--text-p)">${esc(sec.title)}</h2>${sec.body?`<p style="font-size:var(--text-base);color:var(--text-s);line-height:1.8;white-space:pre-wrap;margin-bottom:18px">${esc(sec.body)}</p>`:''}${em?`<div class="med-prev" style="margin-bottom:18px"><iframe src="${em}" allowfullscreen></iframe></div>`:''}${sec.video_url?`<div class="med-prev" style="margin-bottom:18px"><video src="${ea(sec.video_url)}" controls></video></div>`:''}${imgs.length?`<div class="img-grid">${imgs.map(i=>`<div class="img-th"><img src="${ea(i.image_url)}" alt=""></div>`).join('')}</div>`:''}</div>`;
+}
+function renderPrev(){
+  const body=document.getElementById('ed-body');
+  if(!cSections.length){body.innerHTML=`<div class="empty"><div class="empty-ico">📋</div><div class="empty-t">Sin secciones</div></div>`;return;}
+  body.innerHTML=`<div class="prev-wrap">
+    <div class="prev-ban">${cGuide.banner_url?`<img src="${ea(cGuide.banner_url)}" alt="">`:`<div class="prev-ban-ph">${cGuide.categories?.emoji||'📄'}</div>`}<div class="prev-ban-ov"><div class="prev-title">${esc(cGuide.title)}</div></div></div>
+    ${cSections.map((s,i)=>{const em=ytEmb(s.youtube_url);const imgs=s.section_images||[];
+      return `<div class="prev-sec"><div class="prev-sec-n">Sección ${i+1}</div><div class="prev-sec-t">${esc(s.title)}</div>${s.body?`<div class="prev-sec-b">${esc(s.body)}</div>`:''}${em?`<div class="prev-vid"><iframe src="${em}" allowfullscreen></iframe></div>`:''}${s.video_url?`<div class="prev-vid"><video src="${ea(s.video_url)}" controls></video></div>`:''}${imgs.length?`<div class="img-grid" style="margin-top:14px">${imgs.map(img=>`<div class="img-th"><img src="${ea(img.image_url)}" alt=""></div>`).join('')}</div>`:''}</div>`;}).join('')}
+  </div>`;
+}
+function renderEdActs(){
+  const el=document.getElementById('ed-actions');if(!el)return;
+  const ce=isAdmin()||cGuide?.created_by===cUser?.id;
+  el.innerHTML=(ce&&activeSec)?`<button class="btn btn-primary btn-sm" onclick="saveSec()">Guardar sección</button>`:'';
+}
+function setETab(t){eTab=t;document.getElementById('etab-ed').classList.toggle('active',t==='edit');document.getElementById('etab-prev').classList.toggle('active',t==='preview');renderEdBody();}
+function tYTP(id){ytPrev[id]=!ytPrev[id];renderEdBody();}
+function setVT(id,t){vidTab[id]=t;renderEdBody();}
+function setIT(id,t){imgTab[id]=t;renderEdBody();}
+function dov(e,z){e.preventDefault();document.getElementById(z)?.classList.add('dragover');}
+function dlv(e,z){document.getElementById(z)?.classList.remove('dragover');}
+function banDrop(e){e.preventDefault();document.getElementById('ban-drop')?.classList.remove('dragover');if(e.dataTransfer.files.length>0)uploadBannerFile(e.dataTransfer.files[0]);}
+function vidDrop(e,id){e.preventDefault();document.getElementById('vid-drop-'+id)?.classList.remove('dragover');if(e.dataTransfer.files.length>0)uploadVideoFile(e.dataTransfer.files[0],id);}
+function imgDrop(e,id){e.preventDefault();document.getElementById('img-drop-'+id)?.classList.remove('dragover');const f=Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));if(f.length>0)uploadImgFiles(f,id);}
+function uploadBanner(inp){if(!inp.files.length)return;uploadBannerFile(inp.files[0]);}
+async function uploadBannerFile(file){
+  if(!file.type.startsWith('image/')){alert('Solo imágenes');return;}
+  const pw=document.getElementById('ban-prog'),pb=document.getElementById('ban-pb'),pp=document.getElementById('ban-pp'),pl=document.getElementById('ban-pl');
+  if(pw)pw.classList.add('on');let p=0;const iv=setInterval(()=>{p=Math.min(p+15,88);if(pb)pb.style.width=p+'%';if(pp)pp.textContent=Math.round(p)+'%';},400);
+  const ext=file.name.split('.').pop();const path=`${cUser.id}/${Date.now()}.${ext}`;
+  const{error}=await sb.storage.from('an-ban').upload(path,file,{upsert:true});clearInterval(iv);
+  if(error){if(pw)pw.classList.remove('on');alert(error.message);return;}
+  if(pb){pb.style.width='100%';pp.textContent='100%';if(pl)pl.textContent='¡Listo!';}
+  setTimeout(()=>{if(pw)pw.classList.remove('on');},1500);
+  const{data:{publicUrl}}=sb.storage.from('an-ban').getPublicUrl(path);
+  await sb.from('guides').update({banner_url:publicUrl}).eq('id',cGuide.id);
+  cGuide.banner_url=publicUrl;renderEdBody();
+}
+function uploadVideo(inp,id){if(!inp.files.length)return;uploadVideoFile(inp.files[0],id);}
+async function uploadVideoFile(file,secId){
+  if(!file.type.startsWith('video/')){alert('Solo videos');return;}
+  if(file.size>500*1024*1024){alert('Máx 500 MB');return;}
+  const pw=document.getElementById('vid-prog-'+secId),pb=document.getElementById('vid-pb-'+secId),pp=document.getElementById('vid-pp-'+secId),pl=document.getElementById('vid-pl-'+secId);
+  if(pw)pw.classList.add('on');let p=0;const iv=setInterval(()=>{p=Math.min(p+Math.random()*8,88);if(pb)pb.style.width=p+'%';if(pp)pp.textContent=Math.round(p)+'%';},500);
+  const ext=file.name.split('.').pop();const path=`${cUser.id}/${Date.now()}.${ext}`;
+  const{error}=await sb.storage.from('an-vid').upload(path,file,{upsert:true});clearInterval(iv);
+  if(error){if(pw)pw.classList.remove('on');alert(error.message);return;}
+  if(pb){pb.style.width='100%';pp.textContent='100%';if(pl)pl.textContent='¡Listo!';}
+  setTimeout(()=>{if(pw)pw.classList.remove('on');},1800);
+  const{data:{publicUrl}}=sb.storage.from('an-vid').getPublicUrl(path);
+  const sec=cSections.find(s=>s.id===secId);if(sec)sec.video_url=publicUrl;
+  renderSide();renderEdBody();
+}
+async function rmVid(secId){const sec=cSections.find(s=>s.id===secId);if(sec)sec.video_url='';renderEdBody();}
+function uploadImgs(inp,id){if(!inp.files.length)return;uploadImgFiles(Array.from(inp.files),id);}
+async function uploadImgFiles(files,secId){
+  const pw=document.getElementById('img-prog-'+secId),pb=document.getElementById('img-pb-'+secId),pp=document.getElementById('img-pp-'+secId),pl=document.getElementById('img-pl-'+secId);
+  if(pw)pw.classList.add('on');
+  const sec=cSections.find(s=>s.id===secId);if(!sec.section_images)sec.section_images=[];
+  for(let i=0;i<files.length;i++){
+    const f=files[i];if(!f.type.startsWith('image/'))continue;
+    const pct=Math.round((i/files.length)*100);if(pb)pb.style.width=pct+'%';if(pp)pp.textContent=pct+'%';if(pl)pl.textContent=`Imagen ${i+1}/${files.length}...`;
+    const ext=f.name.split('.').pop();const path=`${cUser.id}/${Date.now()}-${i}.${ext}`;
+    const{error}=await sb.storage.from('an-img').upload(path,f,{upsert:true});if(error){alert(error.message);continue;}
+    const{data:{publicUrl}}=sb.storage.from('an-img').getPublicUrl(path);
+    const{data:rec,error:dbe}=await sb.from('section_images').insert({section_id:secId,image_url:publicUrl,order_index:sec.section_images.length}).select().single();
+    if(!dbe&&rec)sec.section_images.push(rec);
+  }
+  if(pb){pb.style.width='100%';pp.textContent='100%';if(pl)pl.textContent='¡Listo!';}
+  setTimeout(()=>{if(pw)pw.classList.remove('on');},1800);
+  renderSide();renderEdBody();
+}
+async function addImgUrl(secId){
+  const inp=document.getElementById('img-url');if(!inp)return;const url=inp.value.trim();if(!url)return;
+  const sec=cSections.find(s=>s.id===secId);
+  const{data,error}=await sb.from('section_images').insert({section_id:secId,image_url:url,order_index:sec?.section_images?.length||0}).select().single();
+  if(error){alert(error.message);return;}
+  if(!sec.section_images)sec.section_images=[];sec.section_images.push(data);inp.value='';
+  renderSide();renderEdBody();
+}
+async function rmImg(imgId,secId){
+  await sb.from('section_images').delete().eq('id',imgId);
+  const sec=cSections.find(s=>s.id===secId);if(sec)sec.section_images=sec.section_images.filter(i=>i.id!==imgId);
+  renderSide();renderEdBody();
+}
+function updSec(field,val){const sec=cSections.find(s=>s.id===activeSec);if(sec)sec[field]=val;if(field==='title'){const l=document.querySelector('.sec-item.active .sec-lbl');if(l)l.textContent=val||'Sin título';}}
+async function addSection(){
+  const{data,error}=await sb.from('sections').insert({guide_id:cGuide.id,title:'Nueva sección',body:'',youtube_url:'',video_url:'',order_index:cSections.length}).select('*,section_images(*)').single();
+  if(error){alert(error.message);return;}
+  cSections.push(data);activeSec=data.id;renderSide();renderEdBody();
+}
+async function saveSec(){
+  const sec=cSections.find(s=>s.id===activeSec);if(!sec)return;
+  const{error}=await sb.from('sections').update({title:sec.title,body:sec.body,youtube_url:sec.youtube_url,video_url:sec.video_url}).eq('id',sec.id);
+  if(error){alert('Error: '+error.message);return;}
+  await sb.from('guides').update({updated_at:new Date().toISOString()}).eq('id',cGuide.id);
+  renderSide();
+  const btn=document.querySelector('#ed-actions button');if(btn){const o=btn.textContent;btn.textContent='✓ Guardado';setTimeout(()=>btn.textContent=o,1500);}
+}
+async function delSec(id){if(!confirm('¿Eliminar esta sección?'))return;await sb.from('sections').delete().eq('id',id);cSections=cSections.filter(s=>s.id!==id);activeSec=cSections[0]?.id||null;renderSide();renderEdBody();}
+async function moveSec(id,dir){
+  const idx=cSections.findIndex(s=>s.id===id),ni=idx+dir;
+  if(ni<0||ni>=cSections.length)return;
+  [cSections[idx],cSections[ni]]=[cSections[ni],cSections[idx]];
+  for(let i=0;i<cSections.length;i++){await sb.from('sections').update({order_index:i}).eq('id',cSections[i].id);cSections[i].order_index=i;}
+  renderSide();renderEdBody();
+}
+async function togglePublish(){
+  const n=!cGuide.is_published;await sb.from('guides').update({is_published:n}).eq('id',cGuide.id);
+  cGuide.is_published=n;document.getElementById('btn-pub').textContent=n?'Despublicar':'Publicar';
 }
 
-function openRoleModal(userId, userName, currentRole) {
-  document.getElementById('role-user-id').value = userId;
-  document.getElementById('role-user-name').value = userName;
-  document.getElementById('role-select').value = currentRole;
-  document.getElementById('role-msg').className = 'msg';
-  document.getElementById('modal-role').style.display = 'flex';
+async function openNewCatModal(){document.getElementById('nc-name').value='';document.getElementById('nc-emoji').value='';document.getElementById('nc-msg').className='msg';document.getElementById('modal-cat').style.display='flex';}
+async function createCategory(){
+  const name=document.getElementById('nc-name').value.trim(),emoji=document.getElementById('nc-emoji').value.trim()||'📁';
+  const msg=document.getElementById('nc-msg');
+  if(!name){msg.textContent='El nombre es obligatorio.';msg.className='msg error';return;}
+  const{error}=await sb.from('categories').insert({name,emoji});
+  if(error){msg.textContent=error.message;msg.className='msg error';return;}
+  closeModal('modal-cat');loadCatsAdmin();
+}
+async function loadCatsAdmin(){
+  const el=document.getElementById('cats-admin-list');el.innerHTML=`<div class="loading"><div class="spinner"></div>Cargando...</div>`;
+  const{data:cats}=await sb.from('categories').select('*').order('name');
+  const{data:gs}=await sb.from('guides').select('category_id');
+  const cm={};(gs||[]).forEach(g=>{if(g.category_id)cm[g.category_id]=(cm[g.category_id]||0)+1;});
+  if(!cats?.length){el.innerHTML=`<div class="empty"><div class="empty-ico">📂</div><div class="empty-t">Sin categorías</div></div>`;return;}
+  el.innerHTML=`<div class="cats-list">${cats.map(c=>`<div class="cat-row"><span style="font-size:22px">${c.emoji||'📁'}</span><span class="cat-row-n">${esc(c.name)}</span><span class="cat-row-c">${cm[c.id]||0} guía${(cm[c.id]||0)!==1?'s':''}</span>${isAdmin()?`<button class="btn btn-danger btn-xs" onclick="delCat('${c.id}')">Eliminar</button>`:''}</div>`).join('')}</div>`;
+}
+async function delCat(id){if(!confirm('¿Eliminar esta categoría?'))return;await sb.from('categories').delete().eq('id',id);loadCatsAdmin();}
+
+async function loadSuggestions(){
+  const el=document.getElementById('sug-list');el.innerHTML=`<div class="loading"><div class="spinner"></div>Cargando...</div>`;
+  const{data}=await sb.from('suggestions').select('*,profiles(full_name,email)').order('created_at',{ascending:false});
+  if(!data?.length){el.innerHTML=`<div class="empty"><div class="empty-ico">💡</div><div class="empty-t">Sin sugerencias aún</div><p style="font-size:var(--text-sm)">Sé el primero en enviar una idea</p></div>`;return;}
+  el.innerHTML=`<div class="sug-grid">${data.map(s=>{
+    const ini=(s.profiles?.full_name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const date=new Date(s.created_at).toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+    return `<div class="sug-card">
+      <div class="sug-hd"><div class="sug-av">${ini}</div><span class="sug-author">${esc(s.profiles?.full_name||s.profiles?.email||'Usuario')}</span><span class="sug-date">${date}</span></div>
+      <div class="sug-text">${esc(s.text)}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <span class="sug-status ${s.status==='pending'?'s-pend':s.status==='done'?'s-done':'s-rev'}">${s.status==='pending'?'⏳ Pendiente':s.status==='done'?'✓ Implementada':'🔍 En revisión'}</span>
+        ${isAdmin()?`<select onchange="updSugStatus('${s.id}',this.value)" style="font-size:var(--text-xs);padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-family:'Montserrat',sans-serif"><option value="pending" ${s.status==='pending'?'selected':''}>Pendiente</option><option value="reviewing" ${s.status==='reviewing'?'selected':''}>En revisión</option><option value="done" ${s.status==='done'?'selected':''}>Implementada</option></select>`:''}
+      </div>
+    </div>`;}).join('')}`;
+}
+async function submitSuggestion(){
+  const text=document.getElementById('sug-text').value.trim();const msg=document.getElementById('sug-msg');msg.className='msg';
+  if(!text){msg.textContent='Escribe tu sugerencia primero.';msg.className='msg error';return;}
+  const{error}=await sb.from('suggestions').insert({user_id:cUser.id,text});
+  if(error){msg.textContent=error.message;msg.className='msg error';return;}
+  document.getElementById('sug-text').value='';msg.textContent='¡Sugerencia enviada!';msg.className='msg success';
+  setTimeout(()=>{msg.className='msg';},2500);loadSuggestions();
+}
+async function updSugStatus(id,status){await sb.from('suggestions').update({status}).eq('id',id);loadSuggestions();}
+
+async function loadAnalytics(){
+  const[{data:guides},{data:cats},{data:sug}]=await Promise.all([
+    sb.from('guides').select('*,categories(name,emoji)').order('view_count',{ascending:false}),
+    sb.from('categories').select('*'),sb.from('suggestions').select('id')
+  ]);
+  const g=guides||[];const tv=g.reduce((a,x)=>a+(x.view_count||0),0);const pub=g.filter(x=>x.is_published).length;
+  document.getElementById('an-kpis').innerHTML=`
+    <div class="stat-c"><div class="stat-lbl">Guías publicadas</div><div class="stat-val">${pub}</div><div class="stat-sub">${g.length} en total</div></div>
+    <div class="stat-c"><div class="stat-lbl">Lecturas totales</div><div class="stat-val">${tv}</div><div class="stat-sub">Acumulado histórico</div></div>
+    <div class="stat-c"><div class="stat-lbl">Categorías</div><div class="stat-val">${cats?.length||0}</div><div class="stat-sub">Activas</div></div>
+    <div class="stat-c"><div class="stat-lbl">Sugerencias</div><div class="stat-val">${sug?.length||0}</div><div class="stat-sub">Enviadas</div></div>`;
+  const mv=Math.max(...g.map(x=>x.view_count||0),1);
+  document.getElementById('trend-list').innerHTML=g.slice(0,8).map((x,i)=>`<div class="trow"><span class="t-rank">${i+1}</span><span class="t-title" title="${esc(x.title)}">${esc(x.title.slice(0,38))}${x.title.length>38?'...':''}</span><div class="t-track"><div class="t-fill" style="width:${((x.view_count||0)/mv)*100}%"></div></div><span class="t-count">${x.view_count||0}</span></div>`).join('');
+  const cm={};g.forEach(x=>{const k=x.categories?.name||'Sin categoría';const e=x.categories?.emoji||'📁';cm[k]={v:(cm[k]?.v||0)+(x.view_count||0),e};});
+  const ca=Object.entries(cm).sort((a,b)=>b[1].v-a[1].v);const mc=Math.max(...ca.map(c=>c[1].v),1);
+  document.getElementById('cat-trend').innerHTML=ca.map(([n,{v,e}],i)=>`<div class="trow"><span class="t-rank">${i+1}</span><span class="t-title">${e} ${esc(n)}</span><div class="t-track"><div class="t-fill am" style="width:${(v/mc)*100}%"></div></div><span class="t-count">${v}</span></div>`).join('');
 }
 
-async function updateRole() {
-  const id = document.getElementById('role-user-id').value;
-  const role = document.getElementById('role-select').value;
-  const msg = document.getElementById('role-msg');
-  const { error } = await sb.from('profiles').update({ role }).eq('id', id);
-  if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
-  closeModal('modal-role');
-  loadUsers();
+async function loadUsers(){
+  if(!isAdmin())return;
+  const el=document.getElementById('users-list');el.innerHTML=`<div class="loading"><div class="spinner"></div>Cargando...</div>`;
+  const{data}=await sb.from('profiles').select('*').order('created_at');
+  el.innerHTML=`<div class="tbl-card"><div class="tbl-wrap"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Registrado</th><th>Acciones</th></tr></thead><tbody>${(data||[]).map(u=>`<tr><td style="font-weight:600">${esc(u.full_name||'—')}</td><td style="color:var(--text-s)">${esc(u.email)}</td><td><span class="role-badge role-${u.role}">${u.role}</span></td><td style="color:var(--text-m)">${new Date(u.created_at).toLocaleDateString('es-CO')}</td><td>${u.id!==cUser.id?`<button class="btn btn-ghost btn-sm" onclick="openRoleM('${u.id}','${ea(u.full_name||u.email)}','${u.role}')">Cambiar rol</button>`:'<span style="font-size:var(--text-xs);color:var(--text-m)">Tú</span>'}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+function openRoleM(id,name,role){document.getElementById('role-uid').value=id;document.getElementById('role-uname').value=name;document.getElementById('role-sel').value=role;document.getElementById('role-msg').className='msg';document.getElementById('modal-role').style.display='flex';}
+async function updateRole(){
+  const id=document.getElementById('role-uid').value,role=document.getElementById('role-sel').value;const msg=document.getElementById('role-msg');
+  const{error}=await sb.from('profiles').update({role}).eq('id',id);
+  if(error){msg.textContent=error.message;msg.className='msg error';return;}
+  closeModal('modal-role');loadUsers();
 }
 
-// ─────────────────────────────────────────────
-// UTILS
-// ─────────────────────────────────────────────
-function ytEmbed(url) {
-  if (!url) return null;
-  const m = url.match(/(?:v=|youtu\.be\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
-  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
-}
+function ytEmb(url){if(!url)return null;const m=url.match(/(?:v=|youtu\.be\/|\/embed\/)([a-zA-Z0-9_-]{11})/);return m?`https://www.youtube.com/embed/${m[1]}`:null;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function ea(s){return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-function escHtml(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function escAttr(str) {
-  return String(str||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-// ─────────────────────────────────────────────
-// BOOT
-// ─────────────────────────────────────────────
 boot();
 </script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 3f4dc443117f4c1c85e94d83b37a2fea4a6721b9
