@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guías de Capacitación</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0ede8;color:#1a1a18;min-height:100vh;font-size:14px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+input,textarea,select,button{font-family:inherit;font-size:14px}
+
+/* ---- TOKENS ---- */
+:root{
+  --bg:#fff;--bg2:#f7f5f1;--bg3:#f0ede8;
+  --text:#1a1a18;--text2:#6b6a66;--text3:#9b9a96;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+  --blue:#185FA5;--blue-bg:#E6F1FB;--blue-text:#0c447c;
+  --red:#A32D2D;--red-bg:#FCEBEB;--red-text:#791F1F;
+  --green:#3B6D11;--green-bg:#EAF3DE;--green-text:#27500A;
+  --amber:#854F0B;--amber-bg:#FAEEDA;--amber-text:#633806;
+  --gray-bg:#F1EFE8;--gray-text:#5F5E5A;
+  --radius:8px;--radius-lg:12px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* ---- LAYOUT ---- */
+.screen{display:none;min-height:100vh}
+.screen.active{display:flex;flex-direction:column}
+.center-screen{align-items:center;justify-content:center;padding:24px}
+
+/* ---- SETUP / AUTH CARDS ---- */
+.auth-card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:32px;width:100%;max-width:420px;box-shadow:var(--shadow)}
+.auth-logo{font-size:22px;font-weight:600;letter-spacing:-0.5px;margin-bottom:4px}
+.auth-sub{font-size:13px;color:var(--text2);margin-bottom:28px}
+.auth-tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--bg2);border-radius:var(--radius);padding:3px}
+.auth-tab{flex:1;padding:7px;text-align:center;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text2);border:none;background:transparent;transition:all .15s}
+.auth-tab.active{background:var(--bg);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.field input,.field select,.field textarea{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);transition:border .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue)}
+.field textarea{resize:vertical;min-height:80px;line-height:1.6}
+.btn{padding:9px 16px;border-radius:var(--radius);border:0.5px solid var(--border2);background:var(--bg);color:var(--text);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+.btn:hover{background:var(--bg2)}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-primary:hover{background:#333;color:#fff}
+.btn-danger{color:var(--red);border-color:var(--red-bg)}
+.btn-danger:hover{background:var(--red-bg)}
+.btn-block{width:100%;justify-content:center}
+.btn-sm{padding:5px 10px;font-size:12px}
+.msg{padding:10px 12px;border-radius:var(--radius);font-size:13px;margin-bottom:16px;display:none}
+.msg.error{background:var(--red-bg);color:var(--red-text);display:block}
+.msg.success{background:var(--green-bg);color:var(--green-text);display:block}
+.msg.info{background:var(--blue-bg);color:var(--blue-text);display:block}
+
+/* ---- TOPNAV ---- */
+.topnav{background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topnav-left{display:flex;align-items:center;gap:16px}
+.nav-logo{font-size:15px;font-weight:600;letter-spacing:-0.3px}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:6px 12px;border-radius:var(--radius);font-size:13px;color:var(--text2);cursor:pointer;border:none;background:transparent}
+.nav-link:hover{background:var(--bg2);color:var(--text)}
+.nav-link.active{background:var(--bg2);color:var(--text);font-weight:500}
+.topnav-right{display:flex;align-items:center;gap:10px}
+.user-pill{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:20px;background:var(--bg2);border:0.5px solid var(--border)}
+.user-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.role-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.role-admin{background:var(--amber-bg);color:var(--amber-text)}
+.role-editor{background:var(--blue-bg);color:var(--blue-text)}
+.role-viewer{background:var(--gray-bg);color:var(--gray-text)}
+
+/* ---- MAIN CONTENT ---- */
+.page-content{flex:1;padding:28px 24px;max-width:1100px;width:100%;margin:0 auto}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:600;letter-spacing:-0.4px}
+.page-subtitle{font-size:13px;color:var(--text2);margin-top:2px}
+
+/* ---- GUIDE GRID ---- */
+.guides-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.guide-card{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);padding:20px;cursor:pointer;transition:all .15s;position:relative}
+.guide-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+.guide-card-title{font-size:15px;font-weight:500;margin-bottom:6px;line-height:1.3}
+.guide-card-meta{font-size:12px;color:var(--text3)}
+.guide-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:0.5px solid var(--border)}
+.guide-card-actions{display:flex;gap:6px}
+.tag{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:500}
+.tag-sections{background:var(--blue-bg);color:var(--blue-text)}
+.tag-published{background:var(--green-bg);color:var(--green-text)}
+.tag-draft{background:var(--gray-bg);color:var(--gray-text)}
+
+/* ---- EDITOR ---- */
+.editor-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
+.editor-sidebar{width:260px;min-width:260px;background:var(--bg);border-right:0.5px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sidebar-head{padding:14px 16px;border-bottom:0.5px solid var(--border)}
+.sidebar-guide-title{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-guide-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.sections-list{flex:1;overflow-y:auto;padding:6px}
+.sec-item{padding:9px 11px;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:2px;border:0.5px solid transparent}
+.sec-item:hover{background:var(--bg2)}
+.sec-item.active{background:var(--bg2);border-color:var(--border)}
+.sec-num{font-size:11px;color:var(--text3);min-width:16px}
+.sec-label{font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sec-badges{display:flex;gap:3px}
+.sec-badge{font-size:10px;padding:1px 5px;border-radius:6px}
+.sec-badge-yt{background:var(--red-bg);color:var(--red-text)}
+.sec-badge-img{background:var(--green-bg);color:var(--green-text)}
+.sidebar-footer{padding:10px}
+.editor-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.editor-topbar{padding:10px 20px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
+.editor-tabs{display:flex;gap:3px}
+.editor-tab{padding:5px 13px;border-radius:var(--radius);font-size:13px;border:0.5px solid transparent;cursor:pointer;background:transparent;color:var(--text2)}
+.editor-tab:hover{background:var(--bg2);color:var(--text)}
+.editor-tab.active{background:var(--bg2);border-color:var(--border);color:var(--text);font-weight:500}
+.editor-body{flex:1;overflow-y:auto;padding:24px}
+.editor-actions{display:flex;gap:8px;align-items:center}
+
+/* ---- SECTION FORM ---- */
+.form-section{max-width:680px}
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em}
+.form-input{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);transition:border .15s}
+.form-input:focus{outline:none;border-color:var(--blue)}
+.form-textarea{width:100%;padding:9px 11px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;min-height:110px;line-height:1.6;transition:border .15s}
+.form-textarea:focus{outline:none;border-color:var(--blue)}
+.form-row{display:flex;gap:10px;align-items:flex-end}
+.form-row .form-input{flex:1}
+.divider{border:none;border-top:0.5px solid var(--border);margin:24px 0}
+.media-preview-box{margin-top:10px;border-radius:var(--radius);overflow:hidden;border:0.5px solid var(--border)}
+.media-preview-box iframe{display:block;width:100%;height:210px;border:none}
+.media-preview-box img{display:block;width:100%;max-height:200px;object-fit:cover}
+.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
+.img-thumb{position:relative;border-radius:var(--radius);overflow:hidden;border:0.5px solid var(--border);aspect-ratio:16/9;background:var(--bg2)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-del{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.hint{font-size:12px;color:var(--text3);margin-top:5px}
+.url-invalid{font-size:12px;color:var(--red-text);margin-top:5px}
+
+/* ---- PREVIEW ---- */
+.preview-wrap{max-width:720px;margin:0 auto}
+.preview-title{font-size:28px;font-weight:600;letter-spacing:-0.5px;margin-bottom:4px}
+.preview-count{font-size:13px;color:var(--text2);margin-bottom:36px}
+.preview-sec{margin-bottom:44px;padding-bottom:44px;border-bottom:0.5px solid var(--border)}
+.preview-sec:last-child{border-bottom:none}
+.preview-sec-num{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.preview-sec-title{font-size:20px;font-weight:500;margin-bottom:12px}
+.preview-sec-body{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:16px;white-space:pre-wrap}
+.preview-video{margin-bottom:16px;border-radius:var(--radius-lg);overflow:hidden;border:0.5px solid var(--border)}
+.preview-video iframe{display:block;width:100%;height:340px;border:none}
+
+/* ---- USERS TABLE ---- */
+.table-wrap{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;padding:11px 16px;text-align:left;background:var(--bg2);border-bottom:0.5px solid var(--border)}
+td{padding:12px 16px;font-size:13px;border-bottom:0.5px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg2)}
+
+/* ---- EMPTY & LOADING ---- */
+.empty{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.35}
+.loading{text-align:center;padding:60px 20px;color:var(--text3);font-size:13px}
+.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--text);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---- MODAL ---- */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px}
+.modal{background:var(--bg);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:460px;border:0.5px solid var(--border2)}
+.modal-title{font-size:16px;font-weight:500;margin-bottom:20px}
+
+/* ---- SETUP STEPS ---- */
+.step-header{margin-bottom:24px}
+.step-badge{display:inline-block;font-size:11px;background:var(--blue-bg);color:var(--blue-text);padding:3px 9px;border-radius:10px;margin-bottom:10px;font-weight:500}
+.setup-code{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px;font-family:monospace;font-size:12px;color:var(--text2);overflow-x:auto;white-space:pre;margin:10px 0;line-height:1.6}
+.setup-link{color:var(--blue);text-decoration:underline;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- ==================== SETUP SCREEN ==================== -->
+<div id="screen-setup" class="screen center-screen active">
+  <div class="auth-card">
+    <div class="auth-logo">Guías de Capacitación</div>
+    <div class="auth-sub">Conecta tu proyecto de Supabase para comenzar</div>
+    <div class="step-header">
+      <span class="step-badge">Configuración inicial</span>
+    </div>
+    <div id="setup-msg" class="msg"></div>
+    <div class="field">
+      <label>URL del proyecto Supabase</label>
+      <input type="url" id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co">
+    </div>
+    <div class="field">
+      <label>Anon Key (clave pública)</label>
+      <input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+    </div>
+    <div class="hint" style="margin-bottom:16px">Encuéntralas en <strong>Supabase → Settings → API</strong></div>
+    <button class="btn btn-primary btn-block" onclick="saveConfig()">Conectar</button>
+    <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid var(--border)">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">¿Primera vez? Ejecuta este SQL en Supabase → SQL Editor:</div>
+      <button class="btn btn-sm" onclick="toggleSchema()" style="margin-bottom:8px">Ver schema SQL</button>
+      <div id="schema-box" style="display:none">
+        <div class="setup-code" id="schema-code"></div>
+        <button class="btn btn-sm" onclick="copySchema()">Copiar SQL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AUTH SCREEN ==================== -->
+<div id="screen-auth" class="screen center-screen">
+  <div class="auth-card">
+    <div class="auth-logo">Guías de Capacitación</div>
+    <div class="auth-sub" id="auth-subtitle">Inicia sesión para continuar</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="showAuthTab('login')">Iniciar sesión</button>
+      <button class="auth-tab" id="tab-register" onclick="showAuthTab('register')">Registrarse</button>
+    </div>
+    <div id="auth-msg" class="msg"></div>
+    <div id="auth-register-fields" style="display:none">
+      <div class="field">
+        <label>Nombre completo</label>
+        <input type="text" id="reg-name" placeholder="Tu nombre">
+      </div>
+    </div>
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" id="auth-email" placeholder="correo@empresa.com">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="auth-password" placeholder="Mínimo 6 caracteres">
+    </div>
+    <button class="btn btn-primary btn-block" id="auth-submit" onclick="submitAuth()">Ingresar</button>
+    <div style="margin-top:14px;text-align:center">
+      <button class="btn btn-sm" onclick="clearConfig()" style="color:var(--text3)">Cambiar configuración</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN APP ==================== -->
+<div id="screen-app" class="screen" style="flex-direction:column">
+
+  <!-- Topnav -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <div class="nav-logo">Guías</div>
+      <div class="nav-links">
+        <button class="nav-link active" id="nav-guides" onclick="navTo('guides')">Guías</button>
+        <button class="nav-link" id="nav-users" onclick="navTo('users')" style="display:none">Usuarios</button>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <div class="user-pill">
+        <div class="user-avatar" id="user-avatar" style="background:var(--blue-bg);color:var(--blue-text)">U</div>
+        <span style="font-size:13px" id="user-name">Usuario</span>
+        <span class="role-badge" id="user-role-badge">viewer</span>
+      </div>
+      <button class="btn btn-sm" onclick="signOut()">Salir</button>
+    </div>
+  </nav>
+
+  <!-- Pages -->
+  <div id="page-guides" class="page-content" style="display:block">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Guías de capacitación</div>
+        <div class="page-subtitle" id="guides-subtitle"></div>
+      </div>
+      <button class="btn btn-primary" id="btn-new-guide" onclick="openNewGuideModal()" style="display:none">+ Nueva guía</button>
+    </div>
+    <div id="guides-list"></div>
+  </div>
+
+  <div id="page-users" class="page-content" style="display:none">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Gestión de usuarios</div>
+        <div class="page-subtitle">Administra roles y accesos</div>
+      </div>
+    </div>
+    <div id="users-list"></div>
+  </div>
+
+  <!-- Editor (fullscreen) -->
+  <div id="page-editor" style="display:none;flex:1;flex-direction:column">
+    <div class="editor-layout">
+      <div class="editor-sidebar">
+        <div class="sidebar-head">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <button class="btn btn-sm" onclick="navTo('guides')">← Volver</button>
+            <button class="btn btn-sm btn-primary" id="btn-publish" onclick="togglePublish()"></button>
+          </div>
+          <div class="sidebar-guide-title" id="sidebar-title">Guía</div>
+          <div class="sidebar-guide-sub" id="sidebar-sub"></div>
+        </div>
+        <div class="sections-list" id="sections-list"></div>
+        <div class="sidebar-footer">
+          <button class="btn btn-sm btn-block" id="btn-add-sec" onclick="addSection()" style="border-style:dashed">+ Agregar sección</button>
+        </div>
+      </div>
+      <div class="editor-main">
+        <div class="editor-topbar">
+          <div class="editor-tabs">
+            <button class="editor-tab active" id="etab-edit" onclick="setEditorTab('edit')">Editar</button>
+            <button class="editor-tab" id="etab-preview" onclick="setEditorTab('preview')">Vista previa</button>
+          </div>
+          <div class="editor-actions" id="editor-actions"></div>
+        </div>
+        <div class="editor-body" id="editor-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+<div id="modal-new-guide" class="modal-bg" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Nueva guía</div>
+    <div class="field">
+      <label>Título</label>
+      <input type="text" id="ng-title" placeholder="Ej: Inducción para nuevos empleados">
+    </div>
+    <div class="field">
+      <label>Descripción (opcional)</label>
+      <textarea id="ng-desc" placeholder="Describe de qué trata esta guía..."></textarea>
+    </div>
+    <div id="ng-msg" class="msg"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('modal-new-guide')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createGuide()">Crear guía</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-role" class="modal-bg" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Cambiar rol de usuario</div>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" id="role-user-name" readonly style="background:var(--bg2)">
+    </div>
+    <div class="field">
+      <label>Rol</label>
+      <select id="role-select">
+        <option value="viewer">viewer — Solo lectura</option>
+        <option value="editor">editor — Puede crear/editar guías propias</option>
+        <option value="admin">admin — Acceso total</option>
+      </select>
+    </div>
+    <input type="hidden" id="role-user-id">
+    <div id="role-msg" class="msg"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('modal-role')">Cancelar</button>
+      <button class="btn btn-primary" onclick="updateRole()">Guardar rol</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-del-guide" class="modal-bg" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Eliminar guía</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:20px">¿Seguro que deseas eliminar esta guía? Esta acción no se puede deshacer.</p>
+    <input type="hidden" id="del-guide-id">
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" onclick="closeModal('modal-del-guide')">Cancelar</button>
+      <button class="btn btn-danger" onclick="confirmDeleteGuide()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// SCHEMA SQL
+// ─────────────────────────────────────────────
+const SCHEMA_SQL = `-- EJECUTAR EN: Supabase → SQL Editor
+-- =============================================
+
+create table if not exists profiles (
+  id uuid references auth.users primary key,
+  email text unique not null,
+  full_name text,
+  role text not null default 'viewer'
+    check (role in ('admin', 'editor', 'viewer')),
+  created_at timestamptz default now()
+);
+
+create table if not exists guides (
+  id uuid default gen_random_uuid() primary key,
+  title text not null,
+  description text,
+  created_by uuid references profiles(id) on delete set null,
+  is_published boolean default false,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists sections (
+  id uuid default gen_random_uuid() primary key,
+  guide_id uuid references guides(id) on delete cascade,
+  title text not null default 'Nueva sección',
+  body text default '',
+  youtube_url text default '',
+  order_index integer default 0,
+  created_at timestamptz default now()
+);
+
+create table if not exists section_images (
+  id uuid default gen_random_uuid() primary key,
+  section_id uuid references sections(id) on delete cascade,
+  image_url text not null,
+  order_index integer default 0
+);
+
+-- RLS
+alter table profiles enable row level security;
+alter table guides enable row level security;
+alter table sections enable row level security;
+alter table section_images enable row level security;
+
+-- Profiles policies
+create policy "profiles_select" on profiles
+  for select using (true);
+create policy "profiles_insert" on profiles
+  for insert with check (auth.uid() = id);
+create policy "profiles_update" on profiles
+  for update using (
+    auth.uid() = id or
+    exists(select 1 from profiles p2 where p2.id = auth.uid() and p2.role = 'admin')
+  );
+
+-- Guides policies
+create policy "guides_select" on guides for select using (true);
+create policy "guides_insert" on guides for insert with check (
+  exists(select 1 from profiles where id = auth.uid() and role in ('admin','editor'))
+);
+create policy "guides_update" on guides for update using (
+  created_by = auth.uid() or
+  exists(select 1 from profiles where id = auth.uid() and role = 'admin')
+);
+create policy "guides_delete" on guides for delete using (
+  created_by = auth.uid() or
+  exists(select 1 from profiles where id = auth.uid() and role = 'admin')
+);
+
+-- Sections policies
+create policy "sections_select" on sections for select using (true);
+create policy "sections_insert" on sections for insert with check (
+  exists(
+    select 1 from guides g join profiles p on p.id = auth.uid()
+    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
+  )
+);
+create policy "sections_update" on sections for update using (
+  exists(
+    select 1 from guides g join profiles p on p.id = auth.uid()
+    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
+  )
+);
+create policy "sections_delete" on sections for delete using (
+  exists(
+    select 1 from guides g join profiles p on p.id = auth.uid()
+    where g.id = guide_id and (g.created_by = auth.uid() or p.role = 'admin')
+  )
+);
+
+-- Section images policies
+create policy "section_images_select" on section_images for select using (true);
+create policy "section_images_insert" on section_images for insert with check (
+  exists(
+    select 1 from sections s
+    join guides g on g.id = s.guide_id
+    join profiles p on p.id = auth.uid()
+    where s.id = section_id and (g.created_by = auth.uid() or p.role = 'admin')
+  )
+);
+create policy "section_images_delete" on section_images for delete using (
+  exists(
+    select 1 from sections s
+    join guides g on g.id = s.guide_id
+    join profiles p on p.id = auth.uid()
+    where s.id = section_id and (g.created_by = auth.uid() or p.role = 'admin')
+  )
+);
+
+-- Auto-create profile on signup
+create or replace function handle_new_user()
+returns trigger as $$
+begin
+  insert into profiles (id, email, full_name, role)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email,'@',1)),
+    'viewer'
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure handle_new_user();`;
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let sb = null;
+let currentUser = null;
+let currentProfile = null;
+let currentGuide = null;
+let currentSections = [];
+let activeSectionId = null;
+let editorTab = 'edit';
+let ytPreviewState = {};
+let guides = [];
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+document.getElementById('schema-code').textContent = SCHEMA_SQL;
+
+function initSupabase() {
+  const cfg = getConfig();
+  if (!cfg) return false;
+  try {
+    sb = supabase.createClient(cfg.url, cfg.key);
+    return true;
+  } catch(e) { return false; }
+}
+
+async function boot() {
+  if (!initSupabase()) { showScreen('setup'); return; }
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfile();
+    showScreen('app');
+    initApp();
+  } else {
+    showScreen('auth');
+  }
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      currentUser = session.user;
+      await loadProfile();
+      showScreen('app');
+      initApp();
+    } else if (event === 'SIGNED_OUT') {
+      currentUser = null; currentProfile = null;
+      showScreen('auth');
+    }
+  });
+}
+
+function getConfig() {
+  try {
+    const c = localStorage.getItem('gcap_config');
+    return c ? JSON.parse(c) : null;
+  } catch(e) { return null; }
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+// SETUP
+// ─────────────────────────────────────────────
+function saveConfig() {
+  const url = document.getElementById('cfg-url').value.trim();
+  const key = document.getElementById('cfg-key').value.trim();
+  const msg = document.getElementById('setup-msg');
+  msg.className = 'msg';
+  if (!url || !key) { msg.textContent = 'Completa ambos campos.'; msg.className='msg error'; return; }
+  if (!url.includes('supabase.co')) { msg.textContent = 'URL inválida. Debe contener supabase.co'; msg.className='msg error'; return; }
+  localStorage.setItem('gcap_config', JSON.stringify({ url, key }));
+  if (!initSupabase()) { msg.textContent = 'No se pudo conectar. Revisa las credenciales.'; msg.className='msg error'; return; }
+  showScreen('auth');
+}
+
+function clearConfig() {
+  localStorage.removeItem('gcap_config');
+  sb = null;
+  showScreen('setup');
+}
+
+function toggleSchema() {
+  const box = document.getElementById('schema-box');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function copySchema() {
+  navigator.clipboard.writeText(SCHEMA_SQL).then(() => alert('SQL copiado al portapapeles'));
+}
+
+// ─────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────
+let authMode = 'login';
+function showAuthTab(mode) {
+  authMode = mode;
+  document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+  document.getElementById('tab-register').classList.toggle('active', mode === 'register');
+  document.getElementById('auth-register-fields').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('auth-submit').textContent = mode === 'login' ? 'Ingresar' : 'Crear cuenta';
+  document.getElementById('auth-msg').className = 'msg';
+}
+
+async function submitAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-password').value;
+  const msg = document.getElementById('auth-msg');
+  msg.className = 'msg';
+  if (!email || !pass) { msg.textContent = 'Completa todos los campos.'; msg.className='msg error'; return; }
+  if (authMode === 'register') {
+    const name = document.getElementById('reg-name').value.trim();
+    const { error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
+    if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
+    msg.textContent = 'Cuenta creada. Revisa tu correo para confirmar.'; msg.className='msg success';
+  } else {
+    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { msg.textContent = 'Credenciales incorrectas.'; msg.className='msg error'; return; }
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+}
+
+// ─────────────────────────────────────────────
+// PROFILE
+// ─────────────────────────────────────────────
+async function loadProfile() {
+  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (data) {
+    currentProfile = data;
+  } else {
+    currentProfile = { id: currentUser.id, email: currentUser.email, full_name: currentUser.email, role: 'viewer' };
+  }
+}
+
+function isAdmin() { return currentProfile?.role === 'admin'; }
+function isEditor() { return currentProfile?.role === 'editor' || isAdmin(); }
+
+function initApp() {
+  const initials = (currentProfile?.full_name || 'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('user-avatar').textContent = initials;
+  document.getElementById('user-name').textContent = currentProfile?.full_name || currentProfile?.email || 'Usuario';
+  const rb = document.getElementById('user-role-badge');
+  const role = currentProfile?.role || 'viewer';
+  rb.textContent = role;
+  rb.className = 'role-badge role-' + role;
+  document.getElementById('nav-users').style.display = isAdmin() ? 'inline-block' : 'none';
+  document.getElementById('btn-new-guide').style.display = isEditor() ? 'inline-block' : 'none';
+  navTo('guides');
+}
+
+// ─────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────
+function navTo(page) {
+  ['guides','users','editor'].forEach(p => {
+    document.getElementById('page-' + p).style.display = 'none';
+  });
+  ['nav-guides','nav-users'].forEach(n => {
+    const el = document.getElementById(n);
+    if (el) el.classList.remove('active');
+  });
+  if (page === 'guides') {
+    document.getElementById('page-guides').style.display = 'block';
+    document.getElementById('nav-guides').classList.add('active');
+    loadGuides();
+  } else if (page === 'users') {
+    document.getElementById('page-users').style.display = 'block';
+    document.getElementById('nav-users').classList.add('active');
+    loadUsers();
+  } else if (page === 'editor') {
+    document.getElementById('page-editor').style.display = 'flex';
+  }
+}
+
+// ─────────────────────────────────────────────
+// GUIDES LIST
+// ─────────────────────────────────────────────
+async function loadGuides() {
+  const list = document.getElementById('guides-list');
+  list.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando guías...</div>`;
+  const { data, error } = await sb.from('guides')
+    .select('*, profiles(full_name, email), sections(id)')
+    .order('created_at', { ascending: false });
+  if (error) { list.innerHTML = `<div class="empty"><div class="empty-icon">!</div>${error.message}</div>`; return; }
+  guides = data || [];
+  const sub = document.getElementById('guides-subtitle');
+  sub.textContent = guides.length + ' guía' + (guides.length !== 1 ? 's' : '') + ' disponible' + (guides.length !== 1 ? 's' : '');
+  if (!guides.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>${isEditor() ? 'Crea la primera guía con el botón "Nueva guía"' : 'No hay guías disponibles aún'}</div>`;
+    return;
+  }
+  list.innerHTML = `<div class="guides-grid">${guides.map(g => renderGuideCard(g)).join('')}</div>`;
+}
+
+function renderGuideCard(g) {
+  const author = g.profiles?.full_name || g.profiles?.email || 'Desconocido';
+  const secCount = g.sections?.length || 0;
+  const canEdit = isAdmin() || g.created_by === currentUser?.id;
+  const date = new Date(g.created_at).toLocaleDateString('es-CO', { day:'2-digit', month:'short', year:'numeric' });
+  return `
+    <div class="guide-card" onclick="openGuide('${g.id}')">
+      <div class="guide-card-title">${escHtml(g.title)}</div>
+      ${g.description ? `<div style="font-size:13px;color:var(--text2);line-height:1.5;margin-top:4px">${escHtml(g.description.slice(0,80))}${g.description.length>80?'...':''}</div>` : ''}
+      <div class="guide-card-footer">
+        <div>
+          <span class="tag ${g.is_published ? 'tag-published' : 'tag-draft'}">${g.is_published ? 'Publicada' : 'Borrador'}</span>
+          ${secCount > 0 ? `<span class="tag tag-sections" style="margin-left:4px">${secCount} sección${secCount!==1?'es':''}</span>` : ''}
+        </div>
+        <div class="guide-card-actions" onclick="event.stopPropagation()">
+          ${canEdit ? `
+            <button class="btn btn-sm" onclick="event.stopPropagation();openGuide('${g.id}')">Editar</button>
+            <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();openDeleteGuide('${g.id}')">✕</button>
+          ` : `<button class="btn btn-sm" onclick="event.stopPropagation();openGuidePreview('${g.id}')">Ver</button>`}
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:8px">${author} · ${date}</div>
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+// GUIDE MODAL
+// ─────────────────────────────────────────────
+function openNewGuideModal() {
+  document.getElementById('ng-title').value = '';
+  document.getElementById('ng-desc').value = '';
+  document.getElementById('ng-msg').className = 'msg';
+  document.getElementById('modal-new-guide').style.display = 'flex';
+}
+
+async function createGuide() {
+  const title = document.getElementById('ng-title').value.trim();
+  const desc = document.getElementById('ng-desc').value.trim();
+  const msg = document.getElementById('ng-msg');
+  if (!title) { msg.textContent = 'El título es obligatorio.'; msg.className='msg error'; return; }
+  const { data, error } = await sb.from('guides').insert({ title, description: desc, created_by: currentUser.id }).select().single();
+  if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
+  closeModal('modal-new-guide');
+  openGuide(data.id);
+}
+
+function openDeleteGuide(id) {
+  document.getElementById('del-guide-id').value = id;
+  document.getElementById('modal-del-guide').style.display = 'flex';
+}
+
+async function confirmDeleteGuide() {
+  const id = document.getElementById('del-guide-id').value;
+  const { error } = await sb.from('guides').delete().eq('id', id);
+  if (!error) { closeModal('modal-del-guide'); loadGuides(); }
+}
+
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+// ─────────────────────────────────────────────
+// GUIDE EDITOR
+// ─────────────────────────────────────────────
+async function openGuide(id) {
+  const { data: guide } = await sb.from('guides').select('*').eq('id', id).single();
+  if (!guide) return;
+  currentGuide = guide;
+  const canEdit = isAdmin() || guide.created_by === currentUser?.id;
+  const { data: sections } = await sb.from('sections')
+    .select('*, section_images(*)')
+    .eq('guide_id', id)
+    .order('order_index');
+  currentSections = sections || [];
+  activeSectionId = currentSections[0]?.id || null;
+  editorTab = 'edit';
+  ytPreviewState = {};
+  navTo('editor');
+  renderSidebar();
+  renderEditorBody();
+  document.getElementById('btn-publish').textContent = guide.is_published ? 'Despublicar' : 'Publicar';
+  document.getElementById('btn-add-sec').style.display = canEdit ? 'block' : 'none';
+}
+
+async function openGuidePreview(id) {
+  await openGuide(id);
+  setEditorTab('preview');
+}
+
+function renderSidebar() {
+  const g = currentGuide;
+  document.getElementById('sidebar-title').textContent = g.title;
+  document.getElementById('sidebar-sub').textContent = currentSections.length + ' sección' + (currentSections.length !== 1 ? 'es' : '');
+  const canEdit = isAdmin() || g.created_by === currentUser?.id;
+  document.getElementById('btn-publish').style.display = canEdit ? 'inline-block' : 'none';
+  const list = document.getElementById('sections-list');
+  if (!currentSections.length) {
+    list.innerHTML = `<div style="padding:12px;font-size:12px;color:var(--text3);text-align:center">Sin secciones aún</div>`;
+    return;
+  }
+  list.innerHTML = currentSections.map((s, i) => {
+    const imgs = s.section_images?.length || 0;
+    return `
+      <div class="sec-item ${s.id === activeSectionId ? 'active' : ''}" onclick="selectSection('${s.id}')">
+        <span class="sec-num">${i+1}</span>
+        <span class="sec-label">${escHtml(s.title)}</span>
+        <div class="sec-badges">
+          ${s.youtube_url ? '<span class="sec-badge sec-badge-yt">▶</span>' : ''}
+          ${imgs > 0 ? `<span class="sec-badge sec-badge-img">${imgs}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectSection(id) {
+  activeSectionId = id;
+  renderSidebar();
+  renderEditorBody();
+}
+
+function renderEditorBody() {
+  if (editorTab === 'preview') { renderPreview(); return; }
+  renderSectionEdit();
+}
+
+function renderSectionEdit() {
+  const body = document.getElementById('editor-body');
+  const canEdit = isAdmin() || currentGuide.created_by === currentUser?.id;
+  if (!currentSections.length) {
+    body.innerHTML = canEdit
+      ? `<div class="empty"><div class="empty-icon">+</div>Agrega la primera sección con el botón de abajo</div>`
+      : `<div class="empty"><div class="empty-icon">📋</div>Esta guía no tiene secciones aún</div>`;
+    renderEditorActions();
+    return;
+  }
+  const sec = currentSections.find(s => s.id === activeSectionId);
+  if (!sec) { body.innerHTML = ''; return; }
+  const embed = ytEmbed(sec.youtube_url);
+  const showYt = ytPreviewState[sec.id] && embed;
+  const imgs = sec.section_images || [];
+  if (!canEdit) {
+    body.innerHTML = renderSectionPreviewOnly(sec);
+    renderEditorActions();
+    return;
+  }
+  body.innerHTML = `
+    <div class="form-section">
+      <div class="form-group">
+        <label class="form-label">Título de la sección</label>
+        <input class="form-input" id="sec-title-inp" type="text" value="${escAttr(sec.title)}" placeholder="Ej: Módulo 1 — Bienvenida" oninput="updateSecField('title', this.value)">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contenido</label>
+        <textarea class="form-textarea" id="sec-body-inp" placeholder="Escribe el contenido de esta sección..." oninput="updateSecField('body', this.value)">${escHtml(sec.body)}</textarea>
+      </div>
+      <hr class="divider">
+      <div class="form-group">
+        <label class="form-label">Video de YouTube</label>
+        <div class="form-row">
+          <input class="form-input" id="sec-yt-inp" type="text" value="${escAttr(sec.youtube_url)}" placeholder="https://www.youtube.com/watch?v=..." oninput="updateSecField('youtube_url', this.value)">
+          <button class="btn btn-sm" onclick="toggleYtPreview('${sec.id}')">${showYt ? 'Ocultar' : 'Previsualizar'}</button>
+        </div>
+        ${sec.youtube_url && !embed ? `<div class="url-invalid">URL de YouTube no válida</div>` : ''}
+        ${sec.youtube_url && !embed ? '' : ''}
+        ${showYt ? `<div class="media-preview-box"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
+      </div>
+      <hr class="divider">
+      <div class="form-group">
+        <label class="form-label">Imágenes</label>
+        <div class="form-row">
+          <input class="form-input" id="img-url-inp" type="text" placeholder="URL de imagen https://...">
+          <button class="btn btn-sm" onclick="addImage('${sec.id}')">+ Agregar</button>
+        </div>
+        <div class="hint">Pega la URL de cualquier imagen web y presiona Agregar o Enter</div>
+        ${imgs.length > 0 ? `
+          <div class="img-grid">
+            ${imgs.map(img => `
+              <div class="img-thumb">
+                <img src="${escAttr(img.image_url)}" alt="" onerror="this.style.display='none'">
+                <button class="img-del" onclick="removeImage('${img.id}','${sec.id}')">×</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+      <hr class="divider">
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="hint" style="flex:1">Sección ${currentSections.indexOf(sec)+1} de ${currentSections.length}</div>
+        ${currentSections.indexOf(sec) > 0 ? `<button class="btn btn-sm" onclick="moveSection('${sec.id}',-1)">↑ Subir</button>` : ''}
+        ${currentSections.indexOf(sec) < currentSections.length-1 ? `<button class="btn btn-sm" onclick="moveSection('${sec.id}',1)">↓ Bajar</button>` : ''}
+        <button class="btn btn-sm btn-danger" onclick="deleteSection('${sec.id}')">Eliminar sección</button>
+      </div>
+    </div>
+  `;
+  const imgInp = document.getElementById('img-url-inp');
+  if (imgInp) imgInp.addEventListener('keydown', e => { if (e.key === 'Enter') addImage(sec.id); });
+  renderEditorActions();
+}
+
+function renderSectionPreviewOnly(sec) {
+  const embed = ytEmbed(sec.youtube_url);
+  const imgs = sec.section_images || [];
+  return `
+    <div class="form-section">
+      <h2 style="font-size:18px;font-weight:500;margin-bottom:12px">${escHtml(sec.title)}</h2>
+      ${sec.body ? `<p style="font-size:15px;color:var(--text2);line-height:1.75;white-space:pre-wrap;margin-bottom:16px">${escHtml(sec.body)}</p>` : ''}
+      ${embed ? `<div class="media-preview-box" style="margin-bottom:16px"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
+      ${imgs.length > 0 ? `<div class="img-grid">${imgs.map(i=>`<div class="img-thumb"><img src="${escAttr(i.image_url)}" alt=""></div>`).join('')}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderEditorActions() {
+  const el = document.getElementById('editor-actions');
+  if (!el) return;
+  const canEdit = isAdmin() || currentGuide.created_by === currentUser?.id;
+  if (!canEdit || !activeSectionId) { el.innerHTML = ''; return; }
+  el.innerHTML = `<button class="btn btn-sm btn-primary" onclick="saveSection()">Guardar sección</button>`;
+}
+
+function renderPreview() {
+  const body = document.getElementById('editor-body');
+  if (!currentSections.length) {
+    body.innerHTML = `<div class="empty"><div class="empty-icon">📋</div>No hay secciones para previsualizar</div>`;
+    return;
+  }
+  body.innerHTML = `
+    <div class="preview-wrap">
+      <div class="preview-title">${escHtml(currentGuide.title)}</div>
+      <div class="preview-count">${currentSections.length} sección${currentSections.length!==1?'es':''}</div>
+      ${currentSections.map((s,i) => {
+        const embed = ytEmbed(s.youtube_url);
+        const imgs = s.section_images || [];
+        return `
+          <div class="preview-sec">
+            <div class="preview-sec-num">Sección ${i+1}</div>
+            <div class="preview-sec-title">${escHtml(s.title)}</div>
+            ${s.body ? `<div class="preview-sec-body">${escHtml(s.body)}</div>` : ''}
+            ${embed ? `<div class="preview-video"><iframe src="${embed}" allowfullscreen></iframe></div>` : ''}
+            ${imgs.length > 0 ? `<div class="img-grid" style="margin-top:12px">${imgs.map(img=>`<div class="img-thumb"><img src="${escAttr(img.image_url)}" alt=""></div>`).join('')}</div>` : ''}
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function setEditorTab(tab) {
+  editorTab = tab;
+  document.getElementById('etab-edit').classList.toggle('active', tab === 'edit');
+  document.getElementById('etab-preview').classList.toggle('active', tab === 'preview');
+  renderEditorBody();
+}
+
+function toggleYtPreview(id) {
+  ytPreviewState[id] = !ytPreviewState[id];
+  renderEditorBody();
+}
+
+// ─────────────────────────────────────────────
+// SECTION CRUD
+// ─────────────────────────────────────────────
+async function addSection() {
+  const order = currentSections.length;
+  const { data, error } = await sb.from('sections').insert({
+    guide_id: currentGuide.id,
+    title: 'Nueva sección',
+    body: '',
+    youtube_url: '',
+    order_index: order
+  }).select('*, section_images(*)').single();
+  if (error) { alert(error.message); return; }
+  currentSections.push(data);
+  activeSectionId = data.id;
+  renderSidebar();
+  renderEditorBody();
+}
+
+function updateSecField(field, value) {
+  const sec = currentSections.find(s => s.id === activeSectionId);
+  if (sec) sec[field] = value;
+  if (field === 'title') {
+    const item = document.querySelector(`.sec-item[onclick="selectSection('${activeSectionId}')"] .sec-label`);
+    if (item) item.textContent = value || 'Sin título';
+  }
+  if (field === 'youtube_url') {
+    const embed = ytEmbed(value);
+    const btn = document.querySelector('#editor-body button');
+    // just update state
+  }
+}
+
+async function saveSection() {
+  const sec = currentSections.find(s => s.id === activeSectionId);
+  if (!sec) return;
+  const { error } = await sb.from('sections').update({
+    title: sec.title,
+    body: sec.body,
+    youtube_url: sec.youtube_url
+  }).eq('id', sec.id);
+  if (error) { alert('Error al guardar: ' + error.message); return; }
+  await sb.from('guides').update({ updated_at: new Date().toISOString() }).eq('id', currentGuide.id);
+  renderSidebar();
+  // brief visual feedback
+  const btn = document.querySelector('#editor-actions button');
+  if (btn) { const orig = btn.textContent; btn.textContent = '✓ Guardado'; setTimeout(() => btn.textContent = orig, 1500); }
+}
+
+async function deleteSection(id) {
+  if (!confirm('¿Eliminar esta sección?')) return;
+  const { error } = await sb.from('sections').delete().eq('id', id);
+  if (error) { alert(error.message); return; }
+  currentSections = currentSections.filter(s => s.id !== id);
+  activeSectionId = currentSections[0]?.id || null;
+  renderSidebar();
+  renderEditorBody();
+}
+
+async function moveSection(id, dir) {
+  const idx = currentSections.findIndex(s => s.id === id);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= currentSections.length) return;
+  [currentSections[idx], currentSections[newIdx]] = [currentSections[newIdx], currentSections[idx]];
+  for (let i = 0; i < currentSections.length; i++) {
+    await sb.from('sections').update({ order_index: i }).eq('id', currentSections[i].id);
+    currentSections[i].order_index = i;
+  }
+  renderSidebar();
+  renderEditorBody();
+}
+
+// ─────────────────────────────────────────────
+// IMAGES
+// ─────────────────────────────────────────────
+async function addImage(sectionId) {
+  const inp = document.getElementById('img-url-inp');
+  if (!inp) return;
+  const url = inp.value.trim();
+  if (!url) return;
+  const sec = currentSections.find(s => s.id === sectionId);
+  const order = sec?.section_images?.length || 0;
+  const { data, error } = await sb.from('section_images').insert({ section_id: sectionId, image_url: url, order_index: order }).select().single();
+  if (error) { alert(error.message); return; }
+  if (!sec.section_images) sec.section_images = [];
+  sec.section_images.push(data);
+  inp.value = '';
+  renderSidebar();
+  renderEditorBody();
+}
+
+async function removeImage(imgId, sectionId) {
+  const { error } = await sb.from('section_images').delete().eq('id', imgId);
+  if (error) { alert(error.message); return; }
+  const sec = currentSections.find(s => s.id === sectionId);
+  if (sec) sec.section_images = sec.section_images.filter(i => i.id !== imgId);
+  renderSidebar();
+  renderEditorBody();
+}
+
+// ─────────────────────────────────────────────
+// PUBLISH
+// ─────────────────────────────────────────────
+async function togglePublish() {
+  const newState = !currentGuide.is_published;
+  const { error } = await sb.from('guides').update({ is_published: newState }).eq('id', currentGuide.id);
+  if (error) { alert(error.message); return; }
+  currentGuide.is_published = newState;
+  document.getElementById('btn-publish').textContent = newState ? 'Despublicar' : 'Publicar';
+}
+
+// ─────────────────────────────────────────────
+// USERS (ADMIN)
+// ─────────────────────────────────────────────
+async function loadUsers() {
+  if (!isAdmin()) return;
+  const list = document.getElementById('users-list');
+  list.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando usuarios...</div>`;
+  const { data, error } = await sb.from('profiles').select('*').order('created_at');
+  if (error) { list.innerHTML = `<div class="empty">${error.message}</div>`; return; }
+  list.innerHTML = `
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Nombre</th><th>Correo</th><th>Rol</th><th>Registrado</th><th>Acciones</th>
+        </tr></thead>
+        <tbody>
+          ${(data||[]).map(u => `
+            <tr>
+              <td>${escHtml(u.full_name || '—')}</td>
+              <td style="color:var(--text2)">${escHtml(u.email)}</td>
+              <td><span class="role-badge role-${u.role}">${u.role}</span></td>
+              <td style="color:var(--text3)">${new Date(u.created_at).toLocaleDateString('es-CO')}</td>
+              <td>
+                ${u.id !== currentUser.id ? `<button class="btn btn-sm" onclick="openRoleModal('${u.id}','${escAttr(u.full_name||u.email)}','${u.role}')">Cambiar rol</button>` : '<span style="font-size:12px;color:var(--text3)">Tú</span>'}
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openRoleModal(userId, userName, currentRole) {
+  document.getElementById('role-user-id').value = userId;
+  document.getElementById('role-user-name').value = userName;
+  document.getElementById('role-select').value = currentRole;
+  document.getElementById('role-msg').className = 'msg';
+  document.getElementById('modal-role').style.display = 'flex';
+}
+
+async function updateRole() {
+  const id = document.getElementById('role-user-id').value;
+  const role = document.getElementById('role-select').value;
+  const msg = document.getElementById('role-msg');
+  const { error } = await sb.from('profiles').update({ role }).eq('id', id);
+  if (error) { msg.textContent = error.message; msg.className='msg error'; return; }
+  closeModal('modal-role');
+  loadUsers();
+}
+
+// ─────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────
+function ytEmbed(url) {
+  if (!url) return null;
+  const m = url.match(/(?:v=|youtu\.be\/|\/embed\/)([a-zA-Z0-9_-]{11})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+
+function escHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(str) {
+  return String(str||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────
+boot();
+</script>
+</body>
+</html>
